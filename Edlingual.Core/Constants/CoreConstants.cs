@@ -1,4 +1,4 @@
-﻿namespace EduLingual.Common.Constants;
+﻿namespace Edulingual.Common.Constants;
 
 public static class CoreConstants
 {

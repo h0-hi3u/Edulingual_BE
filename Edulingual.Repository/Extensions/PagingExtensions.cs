@@ -1,4 +1,4 @@
-﻿using EduLingual.Common.Models;
+﻿using Edulingual.Common.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edulingual.DAL.Extensions;

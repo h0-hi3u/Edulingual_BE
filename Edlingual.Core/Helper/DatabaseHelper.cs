@@ -1,5 +1,5 @@
 ﻿using DbUp;
-using EduLingual.Common.Constants;
+using Edulingual.Common.Constants;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
@@ -20,12 +20,11 @@ public static class DatabaseHelper
         return _config.GetConnectionString(CoreConstants.DEFAULT_CONNECTION);
     }
 
-    public static void ExecuteDbUp(string assemblyName)
+    public static void ExecuteDbUpForSqlServer(string assemblyName)
     {
         var connection = _connectionString == null ? GetConnectionString() : _connectionString;
 
         EnsureDatabase.For.SqlDatabase(connection);
-
         var upgrader = DeployChanges.To.SqlDatabase(connection)
                         .WithScriptsEmbeddedInAssembly(Assembly.Load(assemblyName))
                         .LogToConsole()
@@ -42,6 +41,32 @@ public static class DatabaseHelper
                 Console.ResetColor();
             }
         } else
+        {
+            Console.WriteLine("No scripts found!");
+        }
+    }
+    public static void ExecuteDbUpForPosgresql(string assemblyName)
+    {
+        var connection = _connectionString == null ? GetConnectionString() : _connectionString;
+
+        EnsureDatabase.For.PostgresqlDatabase(connection);
+        var upgrader = DeployChanges.To.PostgresqlDatabase(connection)
+                        .WithScriptsEmbeddedInAssembly(Assembly.Load(assemblyName))
+                        .LogToConsole()
+                        .Build();
+
+        var result = upgrader.GetScriptsToExecute();
+        if (result.Any())
+        {
+            var success = upgrader.PerformUpgrade();
+            if (!success.Successful)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(success.Error);
+                Console.ResetColor();
+            }
+        }
+        else
         {
             Console.WriteLine("No scripts found!");
         }

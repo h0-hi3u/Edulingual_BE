@@ -1,7 +1,4 @@
 ﻿using Edulingual.DAL.Interfaces;
-using EduLingual.Common.Interface;
-using EduLingual.DAL.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace Edulingual.DAL.Implementations;
 

@@ -1,4 +1,4 @@
-﻿namespace EduLingual.Domain.Enum
+﻿namespace Edulingual.Domain.Enum
 {
     public enum RoleEnum
     {

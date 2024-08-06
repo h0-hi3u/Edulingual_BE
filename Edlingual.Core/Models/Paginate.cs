@@ -1,6 +1,6 @@
 ﻿using Edulingual.Common.Models;
 
-namespace EduLingual.Common.Models;
+namespace Edulingual.Common.Models;
 public class Paginate<T> : IPaginate<T>
 {
     public int PageSize { get; set; }

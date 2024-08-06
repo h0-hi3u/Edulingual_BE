@@ -1,8 +1,8 @@
-﻿using EduLingual.Common.Models;
+﻿using Edulingual.Common.Models;
 
 namespace Edulingual.Domain.Entities;
 
-public class Question : BaseEntity<Guid>
+public class Question : BaseEntity
 {
     public string Content { get; set; } = string.Empty;
     public double Point { get; set; } = 0;

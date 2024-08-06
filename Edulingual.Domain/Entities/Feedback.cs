@@ -1,19 +1,15 @@
-﻿using EduLingual.Common.Models;
-using EduLingual.Domain.Enum;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Edulingual.Common.Models;
+using Edulingual.Domain.Enum;
 
-namespace Edulingual.Domain.Entities
+namespace Edulingual.Domain.Entities;
+
+public class Feedback : Auditable
 {
-    [Table("feedback")]
-    public class Feedback : BaseEntity<Guid>
-    {
-        public string Description { get; set; } = string.Empty;
-        public int? Rating { get; set; }
-        public FeedbackStatus FeedbackStatus { get; set; } = FeedbackStatus.Active;
-        public Guid UserId { get; set; }
-        public virtual User User { get; set; } = null!;
-        public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
-        public virtual ICollection<CourseFeedback> CourseFeedbacks { get; set; } = new List<CourseFeedback>();
-    }
+    public Guid UserId { get; set; }
+    public Guid CourseId { get; set; }
+    public string? Content { get; set; } = string.Empty;
+    public int Rating { get; set; }
+
+    public virtual User User { get; set; }
+    public virtual Course Course { get; set; }
 }

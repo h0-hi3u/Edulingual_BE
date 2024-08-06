@@ -1,9 +1,10 @@
 ﻿using EduLingual.Common.Helper;
-using EduLingual.Common.Interface;
-using EduLingual.Common.Models;
-using EduLingual.DAL.Interfaces;
+using Edulingual.Common.Interface;
+using Edulingual.Common.Models;
+using Edulingual.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Edulingual.Common.Helper;
 
 namespace EduLingual.DAL.Data;
 
@@ -41,11 +42,9 @@ public class ApplicationContext : DbContext, IApplicationDbContext
         return base.Set<T>();
     }
 
-    
-
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        foreach(var entry in ChangeTracker.Entries<BaseEntity<Guid>>())
+        foreach(var entry in ChangeTracker.Entries<Auditable>())
         {
             switch (entry.State)
             {

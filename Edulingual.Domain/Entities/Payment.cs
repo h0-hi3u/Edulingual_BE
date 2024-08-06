@@ -1,10 +1,8 @@
-﻿using EduLingual.Common.Models;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Edulingual.Common.Models;
 
 namespace Edulingual.Domain.Entities
 { 
-    public class Payment : BaseEntity<Guid>
+    public class Payment : BaseEntity
     {
         public string FullName { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;

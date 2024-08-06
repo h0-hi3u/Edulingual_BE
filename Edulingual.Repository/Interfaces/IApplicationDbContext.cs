@@ -1,7 +1,6 @@
-﻿using EduLingual.Common.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace EduLingual.DAL.Interfaces;
+namespace Edulingual.DAL.Interfaces;
 
 public interface IApplicationDbContext : IDisposable
 {

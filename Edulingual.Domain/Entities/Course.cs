@@ -1,9 +1,9 @@
-﻿using EduLingual.Common.Models;
-using EduLingual.Domain.Enum;
+﻿using Edulingual.Common.Models;
+using Edulingual.Domain.Enum;
 
 namespace Edulingual.Domain.Entities;
 
-public class Course : BaseEntity<Guid>
+public class Course : BaseEntity
 {
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;

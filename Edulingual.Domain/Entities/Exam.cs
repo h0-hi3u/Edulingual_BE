@@ -1,8 +1,8 @@
-﻿using EduLingual.Common.Models;
+﻿using Edulingual.Common.Models;
 
 namespace Edulingual.Domain.Entities;
 
-public class Exam : BaseEntity<Guid>
+public class Exam : BaseEntity
 {
     public string Title { get; set; } = string.Empty;
     public Guid CenterId { get; set; }

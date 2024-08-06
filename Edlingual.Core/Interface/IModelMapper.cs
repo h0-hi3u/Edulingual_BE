@@ -6,10 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EduLingual.Common.Interface
+namespace Edulingual.Common.Interface;
+
+public interface IModelMapper
 {
-    public interface IModelMapper
-    {
-        void Mapping(ModelBuilder modelBuilder);
-    }
+    void Mapping(ModelBuilder modelBuilder);
 }

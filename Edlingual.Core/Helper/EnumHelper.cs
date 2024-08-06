@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace EduLingual.Common.Helper;
+namespace Edulingual.Common.Helper;
 
 
 public static class EnumHelper

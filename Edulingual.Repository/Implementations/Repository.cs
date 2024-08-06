@@ -1,15 +1,14 @@
-﻿using Autofac.Core;
-using Edulingual.DAL.Extensions;
-using EduLingual.Common.Interface;
-using EduLingual.Common.Models;
-using EduLingual.DAL.Interfaces;
+﻿using Edulingual.DAL.Extensions;
+using Edulingual.DAL.Interfaces;
+using Edulingual.Common.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
+using Edulingual.Common.Models;
 
 namespace Edulingual.DAL.Implementations;
 
-public abstract class Repository<T> : IRepository<T> where T : BaseEntity<Guid>
+public abstract class   Repository<T> : IRepository<T> where T : BaseEntity
 {
     private readonly IApplicationDbContext _context;
     private readonly DbSet<T> _dbSet;
@@ -67,7 +66,7 @@ public abstract class Repository<T> : IRepository<T> where T : BaseEntity<Guid>
         return await query.SingleOrDefaultAsync();
     }
 
-    public async Task<Paginate<T>> GetPagingAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, int pageSize = 10, int pageIndex = 1)
+    public async Task<IPaginate<T>> GetPagingAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, int pageSize = 10, int pageIndex = 1)
     {
         IQueryable<T> query = _dbSet;
         if (include != null) query = include(query);
@@ -77,8 +76,6 @@ public abstract class Repository<T> : IRepository<T> where T : BaseEntity<Guid>
 
     public void Update(T entity)
     {
-        entity.UpdatedAt = DateTime.Now;
-        entity.UpdatedBy = _currentUser.CurrentUserId() ?? entity.UpdatedBy;
         _dbSet.Update(entity);
     }
 
@@ -91,11 +88,6 @@ public abstract class Repository<T> : IRepository<T> where T : BaseEntity<Guid>
 
     public void UpdateRange(IEnumerable<T> entities)
     {
-        foreach (var entity in entities)
-        {
-            entity.UpdatedAt = DateTime.Now;
-            entity.UpdatedBy = _currentUser.CurrentUserId() ?? entity.UpdatedBy;
-        }
         _dbSet.UpdateRange(entities);
     }
 }

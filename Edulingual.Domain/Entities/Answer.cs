@@ -1,8 +1,8 @@
-﻿using EduLingual.Common.Models;
+﻿using Edulingual.Common.Models;
 
 namespace Edulingual.Domain.Entities
 {
-    public class Answer : BaseEntity<Guid>
+    public class Answer : BaseEntity
     {
         public string Content { get; set; } = string.Empty;
         public bool IsCorrect { get; set; } = false;

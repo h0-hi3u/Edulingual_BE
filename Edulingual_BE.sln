@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edulingual.Service", "Eduli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edulingual.DAL", "Edulingual.Repository\Edulingual.DAL.csproj", "{1C5D63D4-4292-42C0-8E99-8CF87D23118E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edulingual.Api", "Edulingual.Api\Edulingual.Api.csproj", "{EC54ACCD-96F2-4599-B82E-77475AB86DF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1C5D63D4-4292-42C0-8E99-8CF87D23118E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C5D63D4-4292-42C0-8E99-8CF87D23118E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C5D63D4-4292-42C0-8E99-8CF87D23118E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC54ACCD-96F2-4599-B82E-77475AB86DF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC54ACCD-96F2-4599-B82E-77475AB86DF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC54ACCD-96F2-4599-B82E-77475AB86DF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC54ACCD-96F2-4599-B82E-77475AB86DF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

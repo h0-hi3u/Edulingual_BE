@@ -1,9 +1,9 @@
-﻿using EduLingual.Common.Models;
+﻿using Edulingual.Common.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 
-namespace EduLingual.DAL.Interfaces;
+namespace Edulingual.DAL.Interfaces;
 
 public interface IRepository<T> where T : class
 {
@@ -40,7 +40,7 @@ public interface IRepository<T> where T : class
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
         bool isForUpdate = false);
-    Task<Paginate<T>> GetPagingAsync(
+    Task<IPaginate<T>> GetPagingAsync(
         Expression<Func<T, bool>>? predicate = null,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
