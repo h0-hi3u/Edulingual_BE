@@ -1,6 +1,6 @@
 ﻿namespace Edulingual.Infrastructure;
 
-using Edulingual.Common.Interface;
+using Edulingual.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
