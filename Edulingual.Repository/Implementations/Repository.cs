@@ -1,6 +1,6 @@
 ﻿using Edulingual.DAL.Extensions;
 using Edulingual.DAL.Interfaces;
-using Edulingual.Common.Interface;
+using Edulingual.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
