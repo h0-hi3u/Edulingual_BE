@@ -1,5 +1,4 @@
 ﻿using Edulingual.Common.Models;
-using Edulingual.Domain.Enum;
 
 namespace Edulingual.Domain.Entities;
 

@@ -9,6 +9,6 @@ public class Exam : BaseEntity
     public int TotalQuestion { get; set; } = 0;
 
     public virtual Course Course { get; set; } = null!;
-    public ICollection<Question> Questions { get; set; } = new List<Question>();
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
+    public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
+    public virtual ICollection<UserExam> UserExams { get; set; } = new List<UserExam>();
 }
