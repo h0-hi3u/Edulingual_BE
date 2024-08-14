@@ -1,5 +1,6 @@
 ﻿using DbUp;
 using Edulingual.Common.Constants;
+using Edulingual.Common.Exceptions;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
@@ -7,7 +8,6 @@ namespace EduLingual.Common.Helper;
 
 public static class DatabaseHelper
 {
-    private static string _connectionString;
     private static IConfiguration _config; 
 
     public static void InitConfiguration(IConfiguration config)
@@ -16,15 +16,19 @@ public static class DatabaseHelper
     }
 
     public static string GetConnectionString()
-    {
-        return _config.GetConnectionString(CoreConstants.DEFAULT_CONNECTION);
-    }
+        => _config.GetConnectionString(DatabaseConstants.DEFAULT_CONNECTION) ?? throw new MissingConnectionStringException();
 
-    public static void ExecuteDbUpForSqlServer(string assemblyName)
+    public static void ExecuteDbUpForSqlServer(string assemblyName, string? connection, string database)
     {
-        var connection = _connectionString == null ? GetConnectionString() : _connectionString;
+        if(database == DatabaseConstants.POSTGRESQL_NAME)
+        {
+            EnsureDatabase.For.PostgresqlDatabase(connection);
+        } else
+        {
+            EnsureDatabase.For.SqlDatabase(connection);
+        }
+        connection ??= GetConnectionString();
 
-        EnsureDatabase.For.SqlDatabase(connection);
         var upgrader = DeployChanges.To.SqlDatabase(connection)
                         .WithScriptsEmbeddedInAssembly(Assembly.Load(assemblyName))
                         .LogToConsole()
@@ -41,32 +45,6 @@ public static class DatabaseHelper
                 Console.ResetColor();
             }
         } else
-        {
-            Console.WriteLine("No scripts found!");
-        }
-    }
-    public static void ExecuteDbUpForPosgresql(string assemblyName)
-    {
-        var connection = _connectionString == null ? GetConnectionString() : _connectionString;
-
-        EnsureDatabase.For.PostgresqlDatabase(connection);
-        var upgrader = DeployChanges.To.PostgresqlDatabase(connection)
-                        .WithScriptsEmbeddedInAssembly(Assembly.Load(assemblyName))
-                        .LogToConsole()
-                        .Build();
-
-        var result = upgrader.GetScriptsToExecute();
-        if (result.Any())
-        {
-            var success = upgrader.PerformUpgrade();
-            if (!success.Successful)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(success.Error);
-                Console.ResetColor();
-            }
-        }
-        else
         {
             Console.WriteLine("No scripts found!");
         }

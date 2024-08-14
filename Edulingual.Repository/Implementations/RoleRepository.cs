@@ -1,4 +1,5 @@
-﻿using Edulingual.Common.Interfaces;
+﻿using Edulingual.Common.Exceptions;
+using Edulingual.Common.Interfaces;
 using Edulingual.DAL.Interfaces;
 using Edulingual.Domain.Entities;
 
