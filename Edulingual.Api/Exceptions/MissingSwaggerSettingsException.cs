@@ -1,4 +1,4 @@
-﻿namespace Edulingual.Common.Exceptions;
+﻿namespace Edulingual.Api.Exceptions;
 
 public class MissingSwaggerSettingsException : ArgumentNullException
 {

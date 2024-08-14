@@ -62,7 +62,6 @@ BenchmarkDotNet.Artifacts/
 project.lock.json
 project.fragment.lock.json
 artifacts/
-!*/Edulingual.Api/appsettings.Development.json
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
