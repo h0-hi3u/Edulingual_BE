@@ -7,12 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Extensions\" />
+    <ProjectReference Include="..\Edlingual.Common\Edulingual.Common.csproj" />
+    <ProjectReference Include="..\Edulingual.Domain\Edulingual.Domain.csproj" />
+    <ProjectReference Include="..\Edulingual.Repository\Edulingual.DAL.csproj" />
+    <ProjectReference Include="..\Edulingual.Service\Edulingual.Service.csproj" />
   </ItemGroup>
 
 </Project>
