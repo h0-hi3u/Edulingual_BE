@@ -1,7 +1,18 @@
-﻿using Edulingual.Common.Exceptions;
+﻿using AutoMapper;
+using Edulingual.Api.Exceptions;
+using Edulingual.Common.Constants;
+using Edulingual.Common.Exceptions;
+using Edulingual.Common.Interfaces;
 using Edulingual.Common.Settings;
+using Edulingual.DAL.Interfaces;
+using Edulingual.Infrastructure;
+using Edulingual.Service.AutoMapper;
+using EduLingual.DAL.Data;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Edulingual.Api.Extensions;
 
@@ -31,6 +42,76 @@ public static class ServiceCollectionExtension
                 options.AddSecurityRequirement(swaggerSettings.GetSecurityRequirement());
             }
         );
+
+        return services;
+    }
+    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
+    {
+        var jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>() ?? throw new MissingJwtSettingsException();
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuer = jwtSettings.Issuer,
+                ValidateIssuer = jwtSettings.ValidateIssuer,
+                ValidAudience = jwtSettings.Audience,
+                ValidateAudience = jwtSettings.ValidateAudience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SigningKey)),
+                ValidateIssuerSigningKey = jwtSettings.ValidateIssuerSigningKey,
+                ValidateLifetime = jwtSettings.ValidateLifetime,
+                ClockSkew = TimeSpan.Zero
+            };
+        });
+        return services;
+    }
+
+    public static IServiceCollection AddCorsPolicy(this IServiceCollection services, IConfiguration configuration)
+    {
+        var corsSettings = configuration.GetSection(nameof(CorsSettings)).Get<CorsSettings>() ??
+                           throw new MissingCorsSettingsException();
+        services.AddCors(options =>
+        {
+            options.AddPolicy(CorsConstants.APP_CORS_POLICY, builder =>
+            {
+                builder.WithOrigins(corsSettings.GetAllowedOriginsArray())
+                    .WithHeaders(corsSettings.GetAllowedHeadersArray())
+                    .WithMethods(corsSettings.GetAllowedMethodsArray());
+                if (corsSettings.AllowCredentials)
+                {
+                    builder.AllowCredentials();
+                }
+
+                builder.Build();
+            });
+        });
+
+        return services;
+    }
+
+    public static IServiceCollection RegisterServices(this IServiceCollection services)
+    {
+        services.AddScoped<IApplicationDbContext, EdulingualContext>();
+        services.AddScoped<EdulingualContext>();
+        services.AddScoped<ICurrentUser, CurrentUser>();
+
+        var registerableTypes = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(assembly => assembly.GetTypes())
+            .Where(type => typeof(IAutoRegisterable).IsAssignableFrom(type) && type.IsInterface)
+            .ToList();
+
+        foreach (var type in registerableTypes) 
+        {
+            var implemetationType = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .FirstOrDefault(t => type.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+            if (implemetationType != null) 
+                services.AddScoped(type, implemetationType);
+
+        }
+        var config = new MapperConfiguration(AutoMapperConfiguration.RegisterMaps);
+        var mapper = config.CreateMapper();
+        services.AddSingleton(mapper);
 
         return services;
     }
