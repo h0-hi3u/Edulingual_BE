@@ -1,4 +1,5 @@
 ﻿using DbUp;
+using DbUp.Engine;
 using Edulingual.Common.Constants;
 using Edulingual.Common.Exceptions;
 using Microsoft.Extensions.Configuration;
@@ -18,23 +19,27 @@ public static class DatabaseHelper
     public static string GetConnectionString()
         => _config.GetConnectionString(DatabaseConstants.DEFAULT_CONNECTION) ?? throw new MissingConnectionStringException();
 
-    public static void ExecuteDbUpForSqlServer(string assemblyName, string? connection, string database)
+    public static void ExecuteDbUp(string assemblyName, string database = DatabaseConstants.SQL_SERVER_NAME, string? connection = null)
     {
-        if(database == DatabaseConstants.POSTGRESQL_NAME)
+        connection ??= GetConnectionString();
+        UpgradeEngine upgrader = default!;
+        if (database == DatabaseConstants.POSTGRESQL_NAME)
         {
             EnsureDatabase.For.PostgresqlDatabase(connection);
-        } else
-        {
-            EnsureDatabase.For.SqlDatabase(connection);
-        }
-        connection ??= GetConnectionString();
-
-        var upgrader = DeployChanges.To.SqlDatabase(connection)
+            upgrader = DeployChanges.To.PostgresqlDatabase(connection)
                         .WithScriptsEmbeddedInAssembly(Assembly.Load(assemblyName))
                         .LogToConsole()
                         .Build();
+        } else if (database == DatabaseConstants.SQL_SERVER_NAME)
+        {
+            EnsureDatabase.For.SqlDatabase(connection);
+            upgrader = DeployChanges.To.SqlDatabase(connection)
+                            .WithScriptsEmbeddedInAssembly(Assembly.Load(assemblyName))
+                            .LogToConsole()
+                            .Build();
+        }
 
-        var result = upgrader.GetScriptsToExecute();
+        var result = upgrader!.GetScriptsToExecute();
         if(result.Any())
         {
             var success = upgrader.PerformUpgrade();
