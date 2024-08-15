@@ -7,11 +7,28 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <None Remove="Scripts\02. Test.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <EmbeddedResource Include="Scripts\02. Test.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Edlingual.Common\Edulingual.Common.csproj" />
+    <ProjectReference Include="..\Edulingual.Domain\Edulingual.Domain.csproj" />
+    <ProjectReference Include="..\Edulingual.Repository\Edulingual.DAL.csproj" />
+    <ProjectReference Include="..\Edulingual.Service\Edulingual.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Scripts\01. Database_Initialization.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
