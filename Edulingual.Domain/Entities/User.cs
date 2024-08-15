@@ -17,6 +17,7 @@ namespace Edulingual.Domain.Entities
 
 
         public virtual Role Role { get; set; } = null!;
+        public virtual ICollection<Course> OwnedCourse { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
         public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
         public virtual ICollection<UserCourse> UserCourses { get; set; } = new List<UserCourse>();
