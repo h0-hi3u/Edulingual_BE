@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Scripts\01. Database_Initialization.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\01. Database_Initialization.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
   </ItemGroup>
 
@@ -15,12 +25,6 @@
     <ProjectReference Include="..\Edulingual.Domain\Edulingual.Domain.csproj" />
     <ProjectReference Include="..\Edulingual.Repository\Edulingual.DAL.csproj" />
     <ProjectReference Include="..\Edulingual.Service\Edulingual.Service.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Scripts\01. Database_Initialization.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
