@@ -5,7 +5,7 @@ VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edulingual.Domain", "Edulingual.Domain\Edulingual.Domain.csproj", "{45F7EEA5-2266-4C90-9978-CAC80A74EB57}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edulingual.Common", "Edlingual.Core\Edulingual.Common.csproj", "{526D391C-8A8E-41C0-8D24-244D4940CD20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edulingual.Common", "Edlingual.Common\Edulingual.Common.csproj", "{526D391C-8A8E-41C0-8D24-244D4940CD20}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edulingual.Service", "Edulingual.Service\Edulingual.Service.csproj", "{689E69BE-14F6-4300-BF36-95B2016032F4}"
 EndProject

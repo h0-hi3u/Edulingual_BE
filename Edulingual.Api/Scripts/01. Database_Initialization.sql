@@ -4,7 +4,7 @@ IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Role'
 BEGIN 
 CREATE TABLE [Role] (
 	[Id]					UUID								PRIMARY KEY					DEFAULT NEWID(),
-	[Name]					VARCHAR								NOT NULL,
+	[Name]					VARCHAR(200)						NOT NULL,
 	[CreateAt]				TIMESTAMP(3)						NOT NULL					DEFAULT CURRENT_TIMESTAMP,
 	[CreateBy]				UUID								NOT NULL,
 	[UpdateAt]				TIMESTAMP(3)						NOT NULL					DEFAULT CURRENT_TIMESTAMP,
@@ -23,6 +23,7 @@ CREATE TABLE [User] (
 	[Password]				VARCHAR(100),
 	[Fullname]				VARCHAR(100),
 	[Description]			TEXT,
+	[ImgUrl]				TEXT,
 	[Status]				INT,
 	[RoleId]				UUID								NOT NULL,
 	[CreateAt]				TIMESTAMP(3)						NOT NULL					DEFAULT CURRENT_TIMESTAMP,
@@ -80,9 +81,9 @@ CREATE TABLE [Course] (
 	[Description]			TEXT								NOT NULL,
 	[Duration]				VARCHAR(200),
 	[Fee]					FLOAT								NOT NULL,
-	[AreaId]				UUID								NOT NULL,
-	[LanguageId]			UUID								NOT NULL,
-	[CategoryId]			UUID								NOT NULL,
+	[CourseAreaId]			UUID								NOT NULL,
+	[CourseLanguageId]		UUID								NOT NULL,
+	[CourseCategoryId]		UUID								NOT NULL,
 	[Status]				INT									NOT NULL,
 	[CreateAt]				TIMESTAMP(3)						NOT NULL					DEFAULT CURRENT_TIMESTAMP,
 	[CreateBy]				UUID								NOT NULL,
@@ -125,7 +126,7 @@ IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Exam'
 BEGIN
 CREATE TABLE [Exam] (
 	[Id]					UUID								PRIMARY KEY					DEFAULT NEWID(),
-	[Title]					VARCHAR(200),
+	[Title]					VARCHAR(200)						NOT NULL,
 	[CourseId]				UUID								NOT NULL,
 	[TotalQuestion]			INT									NOT NULL,
 	[CreateAt]				TIMESTAMP(3)						NOT NULL					DEFAULT CURRENT_TIMESTAMP,
@@ -173,7 +174,7 @@ CREATE TABLE [UserExam] (
 	[Score]					FLOAT								NOT NULL,
 	[TotalRight]			INT									NOT NULL,
 	[UserId]				UUID								NOT NULL,
-	[CourseId]				UUID								NOT NULL,
+	[ExamId]				UUID								NOT NULL,
 	[CreateAt]				TIMESTAMP(3)						NOT NULL					DEFAULT CURRENT_TIMESTAMP,
 	[CreateBy]				UUID								NOT NULL,
 	[UpdateAt]				TIMESTAMP(3)						NOT NULL					DEFAULT CURRENT_TIMESTAMP,
@@ -203,13 +204,13 @@ ALTER TABLE [User]
 ADD FOREIGN KEY (RoleId)							REFERENCES [Role](Id)
 
 ALTER TABLE [Course]
-ADD FOREIGN KEY (AreaId)							REFERENCES [CourseArea](Id)
+ADD FOREIGN KEY (CourseAreaId)						REFERENCES [CourseArea](Id)
 
 ALTER TABLE [Course]
-ADD FOREIGN KEY (LanguageId)						REFERENCES [CourseLanguage](Id)
+ADD FOREIGN KEY (CourseLanguageId)					REFERENCES [CourseLanguage](Id)
 
 ALTER TABLE [Course]
-ADD FOREIGN KEY (CategoryId)						REFERENCES [CourseCategory](Id)
+ADD FOREIGN KEY (CourseCategoryId)					REFERENCES [CourseCategory](Id)
 
 ALTER TABLE [Feedback]
 ADD FOREIGN KEY (UserId)							REFERENCES [User](Id)

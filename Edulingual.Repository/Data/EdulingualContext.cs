@@ -1,18 +1,19 @@
 ﻿using EduLingual.Common.Helper;
-using Edulingual.Common.Interface;
+using Edulingual.Common.Interfaces;
 using Edulingual.Common.Models;
 using Edulingual.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Edulingual.Common.Helper;
+using Edulingual.Domain.Interfaces;
 
 namespace EduLingual.DAL.Data;
 
-public class ApplicationContext : DbContext, IApplicationDbContext
+public class EdulingualContext : DbContext, IApplicationDbContext
 {
     private readonly ICurrentUser _currentUser;
 
-    public ApplicationContext(ICurrentUser currentUser)
+    public EdulingualContext(ICurrentUser currentUser)
     {
         _currentUser = currentUser;
     }

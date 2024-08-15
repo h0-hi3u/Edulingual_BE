@@ -1,6 +1,6 @@
 ﻿using Edulingual.DAL.Extensions;
 using Edulingual.DAL.Interfaces;
-using Edulingual.Common.Interface;
+using Edulingual.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
@@ -55,9 +55,9 @@ public abstract class   Repository<T> : IRepository<T> where T : BaseEntity
         if (predicate != null) query = query.Where(predicate);
         if (orderBy != null) query = orderBy(query);
         return await query.ToListAsync();
-    }
+    }   
 
-    public async Task<T> GetFirstAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, bool isForUpdate = false)
+    public async Task<T> GetOneAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, bool isForUpdate = false)
     {
         IQueryable<T> query = _dbSet;
         if(!isForUpdate) query= query.AsNoTracking();

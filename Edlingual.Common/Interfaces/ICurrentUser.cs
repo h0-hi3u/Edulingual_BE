@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace Edulingual.Common.Interface;
+﻿namespace Edulingual.Common.Interfaces;
 
 public interface ICurrentUser
 {

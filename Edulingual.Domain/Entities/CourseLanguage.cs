@@ -1,14 +1,10 @@
-﻿using Edulingual.Domain.Enum;
-using Edulingual.Common.Models;
+﻿using Edulingual.Common.Models;
 
-namespace Edulingual.Domain.Entities
+namespace Edulingual.Domain.Entities;
+
+public class CourseLanguage : BaseEntity
 {
-    public class CourseLanguage : BaseEntity
-    {
-        public string Name { get; set; } = string.Empty;
+    public string Name { get; set; }
 
-        public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
-
-        public virtual ICollection<CourseCategory> CourseCategories { get; set; } = new List<CourseCategory>();
-    }
+    public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
 }
