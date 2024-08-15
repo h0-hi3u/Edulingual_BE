@@ -22,7 +22,7 @@ public class CourseModelMapper : IModelMapper
             entity.Property(e => e.Status);
 
             entity.HasOne(c => c.Owner).WithMany(u => u.OwnedCourse)
-                .HasForeignKey(c => c.Owner)
+                .HasForeignKey(c => c.OwnerId)
                 .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(c => c.CourseArea).WithMany(ca => ca.Courses)
                 .HasForeignKey(c => c.CourseAreaId)
