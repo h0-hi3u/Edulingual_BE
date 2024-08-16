@@ -6,6 +6,6 @@
         public int PageIndex { get; set; }
         public int TotalRecord { get; set; }
         public int TotalPage { get; set; }
-        public IList<T> Data { get; set; }
+        public IEnumerable<T> Data { get; set; }
     }
 }
