@@ -2,6 +2,7 @@
 using Edulingual.DAL.Interfaces;
 using Edulingual.Domain.Entities;
 using Edulingual.Service.Exceptions;
+using Edulingual.Service.Extensions;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Models;
 using Edulingual.Service.Request.Role;
@@ -30,7 +31,7 @@ public class RoleService : IRoleService
                 predicate: r => !r.IsDeleted,
                 pageIndex: pageIndex,
                 pageSize: pageSize);
-            return new AppActionResult(true) { Data = _mapper.Map<IEnumerable<ViewRoleReponse>>(pagingRole) };
+            return new AppActionResult(true) { Data = pagingRole.Mapper<ViewRoleReponse, Role>(_mapper) };
         }
         catch (Exception ex)
         {
