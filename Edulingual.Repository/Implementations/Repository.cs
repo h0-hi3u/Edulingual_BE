@@ -66,12 +66,13 @@ public abstract class   Repository<T> : IRepository<T> where T : BaseEntity
         return await query.SingleOrDefaultAsync();
     }
 
-    public async Task<IPaginate<T>> GetPagingAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, int pageSize = 10, int pageIndex = 1)
+    public Task<IPaginate<T>> GetPagingAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, int pageSize = 10, int pageIndex = 1)
     {
-        IQueryable<T> query = _dbSet;
+        IQueryable<T> query = _dbSet.AsNoTracking();
         if (include != null) query = include(query);
         if (predicate != null) query = query.Where(predicate);
-        return await query.ToPagingAsync(pageSize, pageIndex);
+        if (orderBy != null) query = orderBy(query);
+        return query.ToPagingAsync(pageSize, pageIndex);
     }
 
     public void Update(T entity)
