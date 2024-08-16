@@ -11,6 +11,8 @@ public class UserCourseModelMapper : IModelMapper
         modelBuilder.Entity<UserCourse>(entity =>
         {
             entity.ToTable(nameof(UserCourse));
+
+            entity.HasKey(e => new { e.UserId, e.CourseId });
         });
     }
 }

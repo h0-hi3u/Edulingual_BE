@@ -1,5 +1,6 @@
 ﻿using Edulingual.Common.Models;
 using Edulingual.Domain.Enum;
+using System.Data.Entity.Core.Metadata.Edm;
 
 namespace Edulingual.Domain.Entities
 {
@@ -17,12 +18,11 @@ namespace Edulingual.Domain.Entities
 
 
         public virtual Role Role { get; set; } = null!;
-        public virtual ICollection<Course> OwnedCourse { get; set; }
+        public virtual ICollection<Course> OwnedCourse { get; set; } = new List<Course>();
         public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
         public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
         public virtual ICollection<UserCourse> UserCourses { get; set; } = new List<UserCourse>();
         public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
-        public virtual ICollection<Exam> OwnExams { get; set; } = new List<Exam>();
         public virtual ICollection<Exam> Exams { get; set; } = new List<Exam>();
         public virtual ICollection<UserExam> UserExams { get; set; } = new List<UserExam>();
     }
