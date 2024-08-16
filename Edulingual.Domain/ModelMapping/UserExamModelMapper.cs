@@ -12,6 +12,7 @@ public class UserExamModelMapper : IModelMapper
         {
             entity.ToTable(nameof(UserExam));
 
+            entity.HasKey(e => new {e.UserId, e.ExamId});
             entity.Property(e => e.Id);
             entity.Property(e => e.Score);
             entity.Property(e => e.TotalQuestionRight);

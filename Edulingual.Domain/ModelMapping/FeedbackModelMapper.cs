@@ -12,6 +12,7 @@ public class FeedbackModelMapper : IModelMapper
         {
             entity.ToTable(nameof(Feedback));
 
+            entity.HasKey(e => new { e.UserId, e.CourseId });
             entity.Property(e => e.Content).HasMaxLength(200);
             entity.Property(e => e.Rating);
         });
