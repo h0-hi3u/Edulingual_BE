@@ -5,7 +5,7 @@ namespace Edulingual.DAL.Extensions;
 
 public static class PagingExtensions
 {
-    public static async Task<Paginate<T>> ToPagingAsync<T>(this IQueryable<T> query, int pageSize, int pageIndex)
+    public static async Task<IPaginate<T>> ToPagingAsync<T>(this IQueryable<T> query, int pageSize, int pageIndex)
     {
         int totalRecord = await query.CountAsync();
         int totalPage = (int)Math.Ceiling(totalRecord / (double)pageSize);
