@@ -189,10 +189,10 @@ BEGIN
 --- End Create Table
 
 --- Start Add Foreign Key
-    ALTER TABLE "User"
-    ADD CONSTRAINT FK_User_Role
-    FOREIGN KEY ("RoleId") REFERENCES "Role"("Id")
-    ON DELETE SET NULL;
+	ALTER TABLE "User"
+	ADD CONSTRAINT FK_User_Role
+	FOREIGN KEY ("RoleId") REFERENCES "Role"("Id")
+	ON DELETE SET NULL;
 
 	ALTER TABLE "Course"
 	ADD CONSTRAINT FK_Course_Area
