@@ -21,7 +21,7 @@ public class EdulingualContext : DbContext, IApplicationDbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var connectionString = DatabaseHelper.GetConnectionString();
-        optionsBuilder.UseSqlServer(connectionString, options
+        optionsBuilder.UseNpgsql(connectionString, options
             => options.CommandTimeout(60))
                 .EnableSensitiveDataLogging()
                 .EnableDetailedErrors()

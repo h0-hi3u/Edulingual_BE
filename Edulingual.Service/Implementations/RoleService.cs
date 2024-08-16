@@ -81,7 +81,7 @@ public class RoleService : IRoleService
             role.IsDeleted = true;
             _roleRepo.Update(role);
             await _unitOfWork.SaveChangesAsync();
-            return new AppActionResult(true, $"Delete success! Role: {role.RoleName}");
+            return new AppActionResult(true, $"Delete success! Role: {role.Name}");
         }
         catch (Exception ex) 
         {
@@ -97,10 +97,10 @@ public class RoleService : IRoleService
             var role = await _roleRepo.GetOneAsync(predicate: r => r.Id == updateRoleRequest.Id && !r.IsDeleted);
             if (role == null) throw new NotFoundException();
 
-            role.RoleName = updateRoleRequest.RoleName;
+            role.Name = updateRoleRequest.Name;
             _roleRepo.Update(role);
             await _unitOfWork.SaveChangesAsync();
-            return new AppActionResult(true, $"Update success! Role {role.RoleName}");
+            return new AppActionResult(true, $"Update success! Role {role.Name}");
         }
         catch (Exception ex) 
         {

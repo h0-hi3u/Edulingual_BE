@@ -6,7 +6,7 @@ namespace Edulingual.Service.Request.Role
     {
         [Required(ErrorMessage = "Id is required!")]
         public Guid Id { get; set; }
-        [Required(ErrorMessage = "RoleName is required!")]
-        public string RoleName { get; set; }
+        [Required(ErrorMessage = "Name is required!")]
+        public string Name { get; set; }
     }
 }
