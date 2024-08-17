@@ -1,15 +1,16 @@
 ﻿using Edulingual.Common.Exceptions;
 using Edulingual.Service.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Edulingual.Api.Controllers.Base
 {
     [ApiController]
     public abstract class BaseApiController : ControllerBase
     {
-        private IActionResult BuildSuccessResult(AppActionResult result)
+        private IActionResult BuildSuccessResult(ServiceActionResult result)
         {
-            return base.Ok(result);
+            return base.StatusCode(statusCode: (int)result.HttpStatusCode, result.Data);
         }
 
         private IActionResult BuildErrorResult(Exception ex)
@@ -28,11 +29,11 @@ namespace Edulingual.Api.Controllers.Base
             }
         }
 
-        protected async Task<IActionResult> ExecuteServiceFunc(Func<Task<AppActionResult>> serviceFunc)
+        protected async Task<IActionResult> ExecuteServiceFunc(Func<Task<ServiceActionResult>> serviceFunc)
         {
             return await ExecuteServiceFunc(serviceFunc, null);
         }
-        protected async Task<IActionResult> ExecuteServiceFunc(Func<Task<AppActionResult>> serviceFunc, Func<Task<AppActionResult>>? errorHandler)
+        protected async Task<IActionResult> ExecuteServiceFunc(Func<Task<ServiceActionResult>> serviceFunc, Func<Task<ServiceActionResult>>? errorHandler)
         {
             try
             {

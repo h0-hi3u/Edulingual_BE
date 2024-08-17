@@ -24,36 +24,36 @@ public class RoleService : IRoleService
         _mapper = mapper;
     }
 
-    public async Task<AppActionResult> GetAllPaing(int pageIndex = 10, int pageSize = 1)
+    public async Task<ServiceActionResult> GetAllPaing(int pageIndex = 10, int pageSize = 1)
     {
         if (pageIndex < 1 || pageSize < 1) throw new InvalidParameterException();
         var pagingRole = await _roleRepo.GetPagingAsync(
             predicate: r => !r.IsDeleted,
             pageIndex: pageIndex,
             pageSize: pageSize);
-        return new AppActionResult(true) { Data = pagingRole.Mapper<ViewRoleReponse, Role>(_mapper) };
+        return new ServiceActionResult(pagingRole.Mapper<ViewRoleReponse, Role>(_mapper));
     }
 
-    public async Task<AppActionResult> GetRoleById(string id)
+    public async Task<ServiceActionResult> GetRoleById(string id)
     {
         if (!Guid.TryParse(id, out Guid roleId)) throw new InvalidParameterException();
 
         var role = await _roleRepo.GetOneAsync(predicate: r => r.Id == roleId && !r.IsDeleted);
 
         if (role == null) throw new NotFoundException();
-        return new AppActionResult(true) { Data = _mapper.Map<ViewRoleReponse>(role) };
+        return new ServiceActionResult(_mapper.Map<ViewRoleReponse>(role));
     }
 
-    public async Task<AppActionResult> CreateRole(CreateRoleRequest createRoleRequest)
+    public async Task<ServiceActionResult> CreateRole(CreateRoleRequest createRoleRequest)
     {
         var role = _mapper.Map<Role>(createRoleRequest);
         await _roleRepo.AddAsync(role);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
         if (!isSuccess) throw new DatabaseException();
-        return new AppActionResult(true, $"Create success! Role: {createRoleRequest.Name}");
+        return new ServiceActionResult($"Create success! Role: {createRoleRequest.Name}");
     }
 
-    public async Task<AppActionResult> DeleteRole(string id)
+    public async Task<ServiceActionResult> DeleteRole(string id)
     {
         if(!Guid.TryParse(id, out Guid roleId)) throw new InvalidParameterException();
 
@@ -62,11 +62,12 @@ public class RoleService : IRoleService
 
         role.IsDeleted = true;
         _roleRepo.Update(role);
-        await _unitOfWork.SaveChangesAsync();
-        return new AppActionResult(true, $"Delete success! Role: {role.Name}");
+        var isSuccess = await _unitOfWork.SaveChangesAsync();
+        if (!isSuccess) throw new DatabaseException();
+        return new ServiceActionResult($"Delete success! Role: {role.Name}");
     }
 
-    public async Task<AppActionResult> UpdateRole(UpdateRoleRequest updateRoleRequest, string id)
+    public async Task<ServiceActionResult> UpdateRole(UpdateRoleRequest updateRoleRequest, string id)
     {
         if (!Guid.TryParse(id, out Guid roleId)) throw new InvalidParameterException();
         if(roleId != updateRoleRequest.Id) throw new InvalidParameterException();
@@ -76,7 +77,8 @@ public class RoleService : IRoleService
 
         role.Name = updateRoleRequest.Name;
         _roleRepo.Update(role);
-        await _unitOfWork.SaveChangesAsync();
-        return new AppActionResult(true, $"Update success! Role {role.Name}");
+        var isSuccess = await _unitOfWork.SaveChangesAsync();
+        if (!isSuccess) throw new DatabaseException();
+        return new ServiceActionResult($"Update success! Role {role.Name}");
     }
 }
