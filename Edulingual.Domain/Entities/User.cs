@@ -13,7 +13,7 @@ namespace Edulingual.Domain.Entities
         public string FullName { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string ImageUrl { get; set; } = null!;
-        public UserStatus Status { get; set; } = UserStatus.Active;
+        public UserStatusEnum Status { get; set; } = UserStatusEnum.Active;
         public Guid RoleId { get; set; }
 
 

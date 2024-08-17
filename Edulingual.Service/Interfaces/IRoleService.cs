@@ -6,9 +6,9 @@ namespace Edulingual.Service.Interfaces;
 
 public interface IRoleService : IAutoRegisterable
 {
-    Task<AppActionResult> GetAllPaing(int pageIndex, int pageSize);
-    Task<AppActionResult> GetRoleById(string id);
-    Task<AppActionResult> CreateRole(CreateRoleRequest createRoleRequest);
-    Task<AppActionResult> UpdateRole(UpdateRoleRequest updateRoleRequest, string id);
-    Task<AppActionResult> DeleteRole(string id);
+    Task<ServiceActionResult> GetAllPaing(int pageIndex, int pageSize);
+    Task<ServiceActionResult> GetRoleById(string id);
+    Task<ServiceActionResult> CreateRole(CreateRoleRequest createRoleRequest);
+    Task<ServiceActionResult> UpdateRole(UpdateRoleRequest updateRoleRequest, string id);
+    Task<ServiceActionResult> DeleteRole(string id);
 }

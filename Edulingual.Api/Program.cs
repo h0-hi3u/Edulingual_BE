@@ -1,5 +1,6 @@
 using Edulingual.Api.Extensions;
 using Edulingual.Common.Constants;
+using Edulingual.Service.Extensions;
 using EduLingual.Common.Helper;
 using Serilog;
 
