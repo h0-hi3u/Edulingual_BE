@@ -1,11 +1,11 @@
 using Edulingual.Api.Extensions;
 using Edulingual.Common.Constants;
 using EduLingual.Common.Helper;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 DatabaseHelper.InitConfiguration(builder.Configuration);
-
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -14,6 +14,10 @@ builder.Services.AddCustomSwagger(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddCorsPolicy(builder.Configuration);
 builder.Services.RegisterServices();
+builder.AddSerilog();
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
 
 var app = builder.Build();
 
@@ -24,6 +28,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors(CorsConstants.APP_CORS_POLICY);
+app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

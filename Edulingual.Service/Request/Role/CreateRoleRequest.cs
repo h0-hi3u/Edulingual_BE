@@ -5,5 +5,5 @@ namespace Edulingual.Service.Request.Role;
 public class CreateRoleRequest
 {
     [Required(ErrorMessage = "Role name is required!")]
-    public string RoleName {  get; set; }
+    public string Name {  get; set; }
 }

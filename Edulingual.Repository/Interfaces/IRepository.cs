@@ -47,6 +47,5 @@ public interface IRepository<T> where T : class
         int pageSize = 10,
         int pageIndex = 1
         );
-    //Task<T> 
     #endregion
 }
