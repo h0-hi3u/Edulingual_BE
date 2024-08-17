@@ -85,7 +85,6 @@ public static class ServiceCollectionExtension
                 builder.Build();
             });
         });
-
         return services;
     }
 

@@ -22,10 +22,7 @@ public class EdulingualContext : DbContext, IApplicationDbContext
     {
         var connectionString = DatabaseHelper.GetConnectionString();
         optionsBuilder.UseNpgsql(connectionString, options
-            => options.CommandTimeout(60))
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors()
-                .LogTo(Console.WriteLine, LogLevel.Information);
+            => options.CommandTimeout(60));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

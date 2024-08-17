@@ -1,7 +1,6 @@
 ﻿using Edulingual.Api.Controllers.Base;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Request.Role;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Edulingual.Api.Controllers;
@@ -18,7 +17,7 @@ public class RoleController : BaseApiController
     }
 
     [HttpGet("all-paging")]
-    public async Task<IActionResult> GetAllRolePaging([FromQuery] int pageIndex, [FromQuery] int pageSize)
+    public async Task<IActionResult> GetAllRolePaging([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10)
     {
         return await ExecuteServiceFunc(
             async () => await _roleService.GetAllPaing(pageIndex, pageSize).ConfigureAwait(false)
@@ -41,11 +40,11 @@ public class RoleController : BaseApiController
         ).ConfigureAwait(false);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> UpdateRole([FromBody] UpdateRoleRequest updateRoleRequest)
+    [HttpPut("/{id}")]
+    public async Task<IActionResult> UpdateRole([FromBody] UpdateRoleRequest updateRoleRequest, [FromRoute] string id)
     {
         return await ExecuteServiceFunc(
-            async () => await _roleService.UpdateRole(updateRoleRequest).ConfigureAwait(false)
+            async () => await _roleService.UpdateRole(updateRoleRequest, id).ConfigureAwait(false)
         ).ConfigureAwait(false);
     }
 

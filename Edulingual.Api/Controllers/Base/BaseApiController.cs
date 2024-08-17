@@ -9,22 +9,23 @@ namespace Edulingual.Api.Controllers.Base
     {
         private IActionResult BuildSuccessResult(AppActionResult result)
         {
-            return base.Ok(result.Data);
+            return base.Ok(result);
         }
 
         private IActionResult BuildErrorResult(Exception ex)
         {
-            if(ex.GetType().IsAssignableTo(typeof(IInvalidException)))
+            if (ex.GetType().IsAssignableTo(typeof(IInvalidException)))
             {
-               return BadRequest(ex.Message);
-            } else if (ex.GetType().IsAssignableTo(typeof(INotFoundException)))
+                return BadRequest(ex.Message);
+            }
+            else if (ex.GetType().IsAssignableTo(typeof(INotFoundException)))
             {
                 return NotFound(ex.Message);
-            } else if (ex.GetType().IsAssignableTo(typeof(IDatabaseException)))
+            }
+            else
             {
                 return Problem(ex.Message);
             }
-            return Ok();
         }
 
         protected async Task<IActionResult> ExecuteServiceFunc(Func<Task<AppActionResult>> serviceFunc)
@@ -35,7 +36,7 @@ namespace Edulingual.Api.Controllers.Base
         {
             try
             {
-                var result = await serviceFunc();
+                 var result = await serviceFunc();
                 return BuildSuccessResult(result);
             }
             catch (Exception ex)

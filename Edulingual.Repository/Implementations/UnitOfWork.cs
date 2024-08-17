@@ -20,11 +20,13 @@ public class UnitOfWork : IUnitOfWork
     {
         try
         {
-            return await _context.SaveChangesAsync() > 0;
+            await _context.SaveChangesAsync();
+            return true;
         }
-        catch
+        catch (Exception ex)
         {
-            Dispose();
+            //Dispose();
+            var a = ex.Message;
             return false;
         }
     }

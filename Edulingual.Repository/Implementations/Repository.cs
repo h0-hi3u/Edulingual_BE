@@ -8,7 +8,7 @@ using Edulingual.Common.Models;
 
 namespace Edulingual.DAL.Implementations;
 
-public abstract class   Repository<T> : IRepository<T> where T : BaseEntity
+public abstract class Repository<T> : IRepository<T> where T : BaseEntity
 {
     private readonly IApplicationDbContext _context;
     private readonly DbSet<T> _dbSet;
