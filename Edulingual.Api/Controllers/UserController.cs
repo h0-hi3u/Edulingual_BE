@@ -2,6 +2,7 @@
 using Edulingual.Domain.Enum;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Request.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Edulingual.Api.Controllers;
@@ -15,7 +16,7 @@ public class UserController : BaseApiController
     {
         _userService = userService;
     }
-
+    [Authorize]
     [HttpGet("get-self-profile")]
     public async Task<IActionResult> GetSelfProfile()
     {
@@ -24,7 +25,7 @@ public class UserController : BaseApiController
             ).ConfigureAwait(false);
     }
     [HttpGet("get-paging-user-role")]
-    public async Task<IActionResult> GetPagingUserWithRole([FromQuery] int pageIndex, [FromRoute] int pageSize, [FromRoute] RoleEnum roleValue)
+    public async Task<IActionResult> GetPagingUserWithRole([FromQuery] int pageIndex, [FromQuery] int pageSize, [FromRoute] RoleEnum roleValue)
     {
         return await ExecuteServiceFunc(
             async () => await _userService.GetUserPagingWithRole(pageIndex, pageSize, roleValue).ConfigureAwait(false)

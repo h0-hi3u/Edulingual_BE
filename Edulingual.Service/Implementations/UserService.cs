@@ -51,7 +51,7 @@ public class UserService : IUserService
     public async Task<ServiceActionResult> CreateUser(CreateUserRequest createUserRequest)
     {
         var user = _mapper.Map<User>(createUserRequest);
-        var role = await _roleRepo.GetOneAsync(predicate: r => r.Name == Enum.GetName(RoleEnum.User) && !r.IsDeleted);
+        var role = await _roleRepo.GetOneAsync(predicate: r => r.Name == Enum.GetName(RoleEnum.Student) && !r.IsDeleted);
         if (role == null) throw new InvalidParameterException("Invalid role!");
         user.RoleId = role.Id;
         user.Status = UserStatusEnum.Active;
@@ -64,7 +64,7 @@ public class UserService : IUserService
 
     public async Task<ServiceActionResult> GetSelfProfile()
     {   
-        if (_currentUser.CurrentUserId == null) throw new InvalidParameterException();
+        if (_currentUser.CurrentUserId() == null) throw new InvalidParameterException();
         var user = await _userRepo.GetOneAsync(predicate: u => u.Id == _currentUser.CurrentUserId());
         if (user == null) throw new NotFoundException();
 

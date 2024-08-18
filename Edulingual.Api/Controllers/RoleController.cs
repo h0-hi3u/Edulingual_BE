@@ -1,10 +1,13 @@
 ﻿using Edulingual.Api.Controllers.Base;
 using Edulingual.Service.Interfaces;
+using Edulingual.Service.Constants;
 using Edulingual.Service.Request.Role;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Edulingual.Api.Controllers;
 
+[Authorize(Roles = RoleConstants.ADMIN, AuthenticationSchemes = TokenConstants.BEARER)]
 [Route("api/[controller]")]
 [ApiController]
 public class RoleController : BaseApiController
