@@ -23,6 +23,7 @@ BEGIN
 		"Password"					VARCHAR(100),
 		"Fullname"					VARCHAR(100),
 		"Description"				TEXT,
+		"ImageUrl"					TEXT,
 		"Status"					INT,
 		"RoleId"					UUID							NOT NULL,
 		"CreateAt"					TIMESTAMP(3)					NOT NULL            DEFAULT CURRENT_TIMESTAMP,
