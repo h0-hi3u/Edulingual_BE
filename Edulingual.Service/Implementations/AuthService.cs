@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Edulingual.Service.Exceptions;
 using Edulingual.Service.Response.Authentication;
 using Microsoft.EntityFrameworkCore;
+using Edulingual.Domain.Enum;
 
 namespace Edulingual.Service.Implementations;
 
@@ -20,7 +21,7 @@ public class AuthService : TokenSerivce, IAuthService
     public async Task<ServiceActionResult> Login(LoginRequest loginRequest)
     {
         var user = await _userRepo.GetOneAsync(
-            predicate: u => u.Email == loginRequest.Email && !u.IsDeleted,
+            predicate: u => u.Email == loginRequest.Email && !u.IsDeleted && u.Status != UserStatusEnum.Banned,
             include: u => u.Include(u => u.Role)
             );
         if (user == null) throw new NotFoundException();

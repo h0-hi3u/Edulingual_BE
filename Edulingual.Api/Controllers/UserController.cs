@@ -25,7 +25,7 @@ public class UserController : BaseApiController
             ).ConfigureAwait(false);
     }
     [HttpGet("get-paging-user-role")]
-    public async Task<IActionResult> GetPagingUserWithRole([FromQuery] int pageIndex, [FromQuery] int pageSize, [FromRoute] RoleEnum roleValue)
+    public async Task<IActionResult> GetPagingUserWithRole([FromQuery] int pageIndex, [FromQuery] int pageSize, [FromQuery] RoleEnum roleValue)
     {
         return await ExecuteServiceFunc(
             async () => await _userService.GetUserPagingWithRole(pageIndex, pageSize, roleValue).ConfigureAwait(false)

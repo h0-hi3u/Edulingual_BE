@@ -55,7 +55,7 @@ public class UserService : IUserService
         if (role == null) throw new InvalidParameterException("Invalid role!");
         user.RoleId = role.Id;
         user.Status = UserStatusEnum.Active;
-        createUserRequest.Password = BCrypt.Net.BCrypt.HashPassword(createUserRequest.Password);
+        user.Password = BCrypt.Net.BCrypt.HashPassword(createUserRequest.Password);
         await _userRepo.AddAsync(user);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
         if (!isSuccess) throw new DatabaseException();
@@ -74,7 +74,7 @@ public class UserService : IUserService
     public async Task<ServiceActionResult> GetUserById(string id)
     {
         if (!Guid.TryParse(id, out Guid userId)) throw new InvalidParameterException();
-        var user = await _userRepo.GetOneAsync(predicate: u => u.Id == _currentUser.CurrentUserId());
+        var user = await _userRepo.GetOneAsync(predicate: u => u.Id == userId && !u.IsDeleted && u.Status != UserStatusEnum.Banned);
         if (user == null) throw new NotFoundException();
 
         return new ServiceActionResult(_mapper.Map<ViewUserResponse>(user));
@@ -86,7 +86,7 @@ public class UserService : IUserService
         if (role == null) throw new InvalidParameterException("Invalid role!");
 
         var list = await _userRepo.GetPagingAsync(
-            predicate: u => u.RoleId == role.Id && !u.IsDeleted,
+            predicate: u => u.RoleId == role.Id && !u.IsDeleted && u.Status != UserStatusEnum.Banned,
             pageIndex: pageIndex,
             pageSize: pageSize
             );

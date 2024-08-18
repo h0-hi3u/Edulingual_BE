@@ -65,10 +65,12 @@ public class SwaggerSettings
         var securityScheme = Options.SecurityScheme;
         return new OpenApiSecurityScheme
         {
-            Name = securityScheme.Name,
-            Description = securityScheme.Description,
+            //Name = securityScheme.Name,
+            Scheme = securityScheme.Schema,
+            BearerFormat = securityScheme.BearerFormat,
+            //Description = securityScheme.Description,
             Type = securityScheme.GetSecuritySchemeType(),
-            In = securityScheme.GetParameterLocation()
+            //In = securityScheme.GetParameterLocation()
         };
     }
 
@@ -116,19 +118,20 @@ public class SwaggerServerVariable
 public class SwaggerSecurityScheme
 {
     public string Name { get; set; }
-    public string Description { get; set; }
+    //public string Description { get; set; }
+    public string Schema { get; set; }
+    public string BearerFormat { get; set; }
     public string Type { get; set; }
-    public string Location { get; set; }
+    //public string Location { get; set; }
 
     public SecuritySchemeType GetSecuritySchemeType()
     {
         return EnumHelper.GetEnumValueFromString<SecuritySchemeType>(Type);
     }
-
-    public ParameterLocation GetParameterLocation()
-    {
-        return EnumHelper.GetEnumValueFromString<ParameterLocation>(Location);
-    }
+    //public ParameterLocation GetParameterLocation()
+    //{
+    //    return EnumHelper.GetEnumValueFromString<ParameterLocation>(Location);
+    //}
 }
 
 public class SwaggerSecurityRequirement
