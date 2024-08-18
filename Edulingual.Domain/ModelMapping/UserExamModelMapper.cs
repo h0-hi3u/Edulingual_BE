@@ -16,6 +16,10 @@ public class UserExamModelMapper : IModelMapper
             entity.Property(e => e.Id);
             entity.Property(e => e.Score);
             entity.Property(e => e.TotalQuestionRight);
+            entity.Property(e => e.CreatedAt).HasColumnName("CreateAt");
+            entity.Property(e => e.CreatedBy).HasColumnName("CreateBy");
+            entity.Property(e => e.UpdatedAt).HasColumnName("UpdateAt");
+            entity.Property(e => e.UpdatedBy).HasColumnName("UpdateBy");
 
             entity.HasOne(ue => ue.User).WithMany(u => u.UserExams)
                 .HasForeignKey(ue => ue.UserId)

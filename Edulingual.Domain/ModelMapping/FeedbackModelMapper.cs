@@ -15,6 +15,10 @@ public class FeedbackModelMapper : IModelMapper
             entity.HasKey(e => new { e.UserId, e.CourseId });
             entity.Property(e => e.Content).HasMaxLength(200);
             entity.Property(e => e.Rating);
+            entity.Property(e => e.CreatedAt).HasColumnName("CreateAt");
+            entity.Property(e => e.CreatedBy).HasColumnName("CreateBy");
+            entity.Property(e => e.UpdatedAt).HasColumnName("UpdateAt");
+            entity.Property(e => e.UpdatedBy).HasColumnName("UpdateBy");
         });
     }
 }

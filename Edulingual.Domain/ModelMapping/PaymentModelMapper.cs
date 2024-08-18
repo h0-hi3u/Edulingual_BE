@@ -14,6 +14,10 @@ public class PaymentModelMapper : IModelMapper
 
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.Fee);
+            entity.Property(e => e.CreatedAt).HasColumnName("CreateAt");
+            entity.Property(e => e.CreatedBy).HasColumnName("CreateBy");
+            entity.Property(e => e.UpdatedAt).HasColumnName("UpdateAt");
+            entity.Property(e => e.UpdatedBy).HasColumnName("UpdateBy");
 
             entity.HasOne(p => p.User).WithMany(u => u.Payments)
                 .HasForeignKey(p => p.UserId)

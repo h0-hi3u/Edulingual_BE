@@ -22,6 +22,10 @@ public class UserModelMapper : IModelMapper
             entity.Property(e => e.Description);
             entity.Property(e => e.ImageUrl);
             entity.Property(e => e.Status);
+            entity.Property(e => e.CreatedAt).HasColumnName("CreateAt");
+            entity.Property(e => e.CreatedBy).HasColumnName("CreateBy");
+            entity.Property(e => e.UpdatedAt).HasColumnName("UpdateAt");
+            entity.Property(e => e.UpdatedBy).HasColumnName("UpdateBy");
 
             entity.HasOne(u => u.Role).WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId)
