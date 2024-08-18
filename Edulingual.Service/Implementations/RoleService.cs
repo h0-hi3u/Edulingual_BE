@@ -7,7 +7,7 @@ using Edulingual.Service.Interfaces;
 using Edulingual.Service.Models;
 using Edulingual.Service.Request.Role;
 using Edulingual.Service.Response.Role;
-using System.Data.Entity.Migrations.Infrastructure;
+using System.Net;
 
 namespace Edulingual.Service.Implementations;
 
@@ -50,7 +50,7 @@ public class RoleService : IRoleService
         await _roleRepo.AddAsync(role);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
         if (!isSuccess) throw new DatabaseException();
-        return new ServiceActionResult($"Create success! Role: {createRoleRequest.Name}");
+        return new ServiceActionResult($"Create success! Role: {createRoleRequest.Name}", HttpStatusCode.Created);
     }
 
     public async Task<ServiceActionResult> DeleteRole(string id)
