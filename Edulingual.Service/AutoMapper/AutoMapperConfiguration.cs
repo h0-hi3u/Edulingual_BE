@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Edulingual.Domain.Entities;
+using Edulingual.Service.Request.CourseArea;
 using Edulingual.Service.Request.Role;
 using Edulingual.Service.Request.User;
+using Edulingual.Service.Response.CourseArea;
 using Edulingual.Service.Response.Role;
 using Edulingual.Service.Response.User;
 
@@ -13,6 +15,7 @@ public static class AutoMapperConfiguration
     {
         CreateRoleMap(mapper);
         CreatUserMap(mapper);
+        CreateRoleMap(mapper);
     }
 
     private static void CreateRoleMap(IMapperConfigurationExpression mapper)
@@ -26,5 +29,11 @@ public static class AutoMapperConfiguration
         mapper.CreateMap<CreateUserRequest, User>();
         mapper.CreateMap<UpdateRoleRequest, User>();
         mapper.CreateMap<User, ViewUserResponse>();
+    }
+    private static void CreatCourseAreaMap(IMapperConfigurationExpression mapper)
+    {
+        mapper.CreateMap<CreateCourseAreaRequest, CourseArea>();
+        mapper.CreateMap<UpdateCourseAreaRequest, CourseArea>();
+        mapper.CreateMap<CourseArea, ViewCourseAreaResponse>();
     }
 }
