@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Edulingual.Domain.Entities;
 using Edulingual.Service.Request.CourseArea;
+using Edulingual.Service.Request.CourseCategory;
+using Edulingual.Service.Request.CourseLanguage;
 using Edulingual.Service.Request.Role;
 using Edulingual.Service.Request.User;
 using Edulingual.Service.Response.CourseArea;
+using Edulingual.Service.Response.CourseCategory;
+using Edulingual.Service.Response.CourseLanguage;
 using Edulingual.Service.Response.Role;
 using Edulingual.Service.Response.User;
 
@@ -16,6 +20,8 @@ public static class AutoMapperConfiguration
         CreateRoleMap(mapper);
         CreatUserMap(mapper);
         CreateRoleMap(mapper);
+        CreateCourseLanguageMap(mapper);
+        CreateCourseCategoryMap(mapper);
     }
 
     private static void CreateRoleMap(IMapperConfigurationExpression mapper)
@@ -35,5 +41,17 @@ public static class AutoMapperConfiguration
         mapper.CreateMap<CreateCourseAreaRequest, CourseArea>();
         mapper.CreateMap<UpdateCourseAreaRequest, CourseArea>();
         mapper.CreateMap<CourseArea, ViewCourseAreaResponse>();
+    }
+    private static void CreateCourseLanguageMap(IMapperConfigurationExpression mapper)
+    {
+        mapper.CreateMap<CreateCourseLanguageRequest, CourseLanguage>();
+        mapper.CreateMap<UpdateCourseLanguageRequest, CourseLanguage>();
+        mapper.CreateMap<CourseLanguage, ViewCourseLanguageReponse>();
+    }
+    private static void CreateCourseCategoryMap(IMapperConfigurationExpression mapper)
+    {
+        mapper.CreateMap<CreateCourseCategoryRequest, CourseCategory>();
+        mapper.CreateMap<UpdateCourseCategoryRequest, CourseCategory>();
+        mapper.CreateMap<CourseCategory, ViewCourseCategoryResponse>();
     }
 }
