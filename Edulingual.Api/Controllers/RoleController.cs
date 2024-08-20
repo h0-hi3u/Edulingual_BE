@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Edulingual.Api.Controllers;
 
-[Authorize(Roles = RoleConstants.ADMIN, AuthenticationSchemes = TokenConstants.BEARER)]
+[Authorize(Roles = RoleConstants.ADMIN, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
 [Route("api/[controller]")]
 [ApiController]
 public class RoleController : BaseApiController

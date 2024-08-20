@@ -13,11 +13,11 @@ public class CurrentUser : ICurrentUser
     }
     public Guid? CurrentUserId()
     {
-        if (Guid.TryParse(_httpAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out Guid id)) return id;
+        if (Guid.TryParse(_httpAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out Guid id)) return id;
         return null;
     }
     public string? CurrentUserEmail()
     {
-        return _httpAccessor.HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        return _httpAccessor.HttpContext?.User.FindFirst(ClaimTypes.Email)?.Value;
     }
 }

@@ -1,4 +1,5 @@
 using Edulingual.Api.Extensions;
+using Edulingual.Caching.Extensions;
 using Edulingual.Common.Constants;
 using Edulingual.Service.Extensions;
 using EduLingual.Common.Helper;
@@ -15,6 +16,7 @@ builder.Services.AddCustomSwagger(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddCorsPolicy(builder.Configuration);
 builder.Services.RegisterServices();
+builder.Services.RegisterCaching(builder.Configuration);
 builder.AddSerilog();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
