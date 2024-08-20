@@ -43,6 +43,14 @@ public class CourseAreaController : BaseApiController
             async() => await _courseAreaService.CreateCourseArea(createCourseAreaRequest).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
+    [HttpPut]
+    public async Task<IActionResult> UpdateCourseArea(UpdateCourseAreaRequest updateCourseAreaRequest)
+    {
+        return await ExecuteServiceFunc(
+            async() => await _courseAreaService.UpdateCourseArea(updateCourseAreaRequest).ConfigureAwait(false)
+            ).ConfigureAwait(false);
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCourseArea([FromQuery] string id)
     {
