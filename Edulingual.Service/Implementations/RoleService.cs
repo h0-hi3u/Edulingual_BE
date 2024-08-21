@@ -7,7 +7,13 @@ using Edulingual.Service.Interfaces;
 using Edulingual.Service.Models;
 using Edulingual.Service.Request.Role;
 using Edulingual.Service.Response.Role;
+using Microsoft.Extensions.Caching.Distributed;
 using System.Net;
+using Newtonsoft.Json;
+using Edulingual.Caching.Helper;
+using Edulingual.Caching.Interfaces;
+using Microsoft.IdentityModel.Tokens;
+using Edulingual.Common.Models;
 
 namespace Edulingual.Service.Implementations;
 
@@ -16,31 +22,49 @@ public class RoleService : IRoleService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRoleRepository _roleRepo;
     private readonly IMapper _mapper;
+    private readonly IDataCached _dataCached;
 
-    public RoleService(IUnitOfWork unitOfWork, IRoleRepository roleRepo, IMapper mapper)
+    public RoleService(IUnitOfWork unitOfWork, IRoleRepository roleRepo, IMapper mapper, IDataCached dataCached)
     {
         _unitOfWork = unitOfWork;
         _roleRepo = roleRepo;
         _mapper = mapper;
+        _dataCached = dataCached;
     }
 
     public async Task<ServiceActionResult> GetAllPaing(int pageIndex = 10, int pageSize = 1)
     {
         if (pageIndex < 1 || pageSize < 1) throw new InvalidParameterException();
+
+        var dataFromCached = await _dataCached.GetDataCache<Role>(pageIndex: pageIndex, pageSize: pageSize);
+        if (dataFromCached != null) 
+        {
+            return new ServiceActionResult(dataFromCached.Mapper<ViewRoleReponse, Role>(_mapper));
+        }
         var pagingRole = await _roleRepo.GetPagingAsync(
             predicate: r => !r.IsDeleted,
             pageIndex: pageIndex,
             pageSize: pageSize);
-        return new ServiceActionResult(pagingRole.Mapper<ViewRoleReponse, Role>(_mapper));
+        var result = pagingRole.Mapper<ViewRoleReponse, Role>(_mapper);
+        if (!result.Data.IsNullOrEmpty())
+        {
+            await _dataCached.SetToCache(value: result, pageIndex: pageIndex, pageSize: pageSize, cacheTime: null);
+        }
+        return new ServiceActionResult(result);
     }
 
     public async Task<ServiceActionResult> GetRoleById(string id)
     {
         if (!Guid.TryParse(id, out Guid roleId)) throw new InvalidParameterException();
 
-        var role = await _roleRepo.GetOneAsync(predicate: r => r.Id == roleId && !r.IsDeleted);
+        var dataFromCached = await _dataCached.GetDataCache<Role>(id);
+        if (dataFromCached != null) return new ServiceActionResult(_mapper.Map<ViewRoleReponse>(dataFromCached));
 
+        var role = await _roleRepo.GetOneAsync(predicate: r => r.Id == roleId && !r.IsDeleted);
         if (role == null) throw new NotFoundException();
+
+        await _dataCached.SetToCache(value: role, id: role.Id.ToString(), cacheTime: null);
+
         return new ServiceActionResult(_mapper.Map<ViewRoleReponse>(role));
     }
 
