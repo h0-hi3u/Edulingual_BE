@@ -51,7 +51,7 @@ public class CourseCategoryController : BaseApiController
             ).ConfigureAwait(false);
     }
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCourseCategory([FromQuery] string id)
+    public async Task<IActionResult> DeleteCourseCategory([FromRoute] string id)
     {
         return await ExecuteServiceFunc(
             async () => await _courseCateogoryService.DeleteCourseCategory(id).ConfigureAwait(false)

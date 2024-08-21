@@ -2,5 +2,5 @@
 
 public static class TokenConstants
 {
-    public const string BEARER = "Bearer";
+    public const string SCHEMA_BEARER = "Bearer";
 }

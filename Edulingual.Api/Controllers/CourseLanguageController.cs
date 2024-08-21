@@ -51,7 +51,7 @@ public class CourseLanguageController : BaseApiController
             ).ConfigureAwait(false);
     }
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCourseLanguage([FromQuery] string id)
+    public async Task<IActionResult> DeleteCourseLanguage([FromRoute] string id)
     {
         return await ExecuteServiceFunc(
             async () => await _courseLanguageService.DeleteCourseLanguage(id).ConfigureAwait(false)

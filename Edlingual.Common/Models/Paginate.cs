@@ -12,6 +12,16 @@ public class Paginate<T> : IPaginate<T>
     {
         Data = Array.Empty<T>();
     }
+
+    public Paginate(int pageSize, int pageIndex, int totalRecord, int totalPage, IEnumerable<T> data)
+    {
+        PageSize = pageSize;
+        PageIndex = pageIndex;
+        TotalRecord = totalRecord;
+        TotalPage = totalPage;
+        Data = data;
+    }
+
     //public Paginate(IQueryable<T> query, int pageSize, int pageIndex)
     //{
     //    PageSize = pageSize;
