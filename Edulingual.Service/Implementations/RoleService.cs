@@ -39,7 +39,7 @@ public class RoleService : IRoleService
         var dataFromCached = await _dataCached.GetDataCache<Role>(pageIndex: pageIndex, pageSize: pageSize);
         if (dataFromCached != null) 
         {
-            return new ServiceActionResult(dataFromCached.Mapper<ViewRoleReponse, Role>(_mapper));
+            return new ServiceActionResult(dataFromCached);
         }
         var pagingRole = await _roleRepo.GetPagingAsync(
             predicate: r => !r.IsDeleted,
@@ -58,14 +58,14 @@ public class RoleService : IRoleService
         if (!Guid.TryParse(id, out Guid roleId)) throw new InvalidParameterException();
 
         var dataFromCached = await _dataCached.GetDataCache<Role>(id);
-        if (dataFromCached != null) return new ServiceActionResult(_mapper.Map<ViewRoleReponse>(dataFromCached));
+        if (dataFromCached != null) return new ServiceActionResult(dataFromCached);
 
         var role = await _roleRepo.GetOneAsync(predicate: r => r.Id == roleId && !r.IsDeleted);
         if (role == null) throw new NotFoundException();
+        var result = _mapper.Map<ViewRoleReponse>(role);
+        await _dataCached.SetToCache(value: result, id: role.Id.ToString());
 
-        await _dataCached.SetToCache(value: role, id: role.Id.ToString(), cacheTime: null);
-
-        return new ServiceActionResult(_mapper.Map<ViewRoleReponse>(role));
+        return new ServiceActionResult(result);
     }
 
     public async Task<ServiceActionResult> CreateRole(CreateRoleRequest createRoleRequest)
@@ -81,6 +81,10 @@ public class RoleService : IRoleService
     {
         if(!Guid.TryParse(id, out Guid roleId)) throw new InvalidParameterException();
 
+        if(await _dataCached.GetDataCache<Role>(id) is not null)
+        {
+            await _dataCached.RemoveDataCache<Role>(id);
+        }
         var role = await _roleRepo.GetOneAsync(predicate: r => r.Id.Equals(roleId) && !r.IsDeleted);
         if (role == null) throw new NotFoundException();
 
@@ -96,6 +100,11 @@ public class RoleService : IRoleService
         if (!Guid.TryParse(id, out Guid roleId)) throw new InvalidParameterException();
         if(roleId != updateRoleRequest.Id) throw new InvalidParameterException();
 
+        if (await _dataCached.GetDataCache<Role>(id) is not null)
+        {
+            await _dataCached.RemoveDataCache<Role>(id);
+        }
+
         var role = await _roleRepo.GetOneAsync(predicate: r => r.Id == roleId && !r.IsDeleted);
         if (role == null) throw new NotFoundException();
 
@@ -103,6 +112,7 @@ public class RoleService : IRoleService
         _roleRepo.Update(role);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
         if (!isSuccess) throw new DatabaseException();
+        await _dataCached.SetToCache(value: _mapper.Map<ViewRoleReponse>(role), id: id);
         return new ServiceActionResult($"Update success! Role {role.Name}");
     }
 }
