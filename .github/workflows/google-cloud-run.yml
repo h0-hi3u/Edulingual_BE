@@ -6,10 +6,10 @@ on:
       - main
 
 env:
-  PROJECT_ID: '${{ secrets.PROJECT_ID }}'
-  GAR_LOCATION: '${{ secrets.GAR_LOCATION }}'
-  SERVICE: '${{ secrets.SERVICE_NAME }}'
-  REGION: '${{ secrets.SERVICE_REGION }}'
+  PROJECT_ID: '${{ vars.PROJECT_ID }}'
+  GAR_LOCATION: '${{ vars.GAR_LOCATION }}'
+  SERVICE: '${{ vars.SERVICE_NAME }}'
+  REGION: '${{ vars.SERVICE_REGION }}'
 
 jobs:
   deploy:
