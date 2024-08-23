@@ -9,17 +9,17 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["EduLingual.Api/EduLingual.Api.csproj", "EduLingual.Api/"]
-RUN dotnet restore "./EduLingual.Api/EduLingual.Api.csproj"
+COPY ["Edulingual.Api/Edulingual.Api.csproj", "Edulingual.Api/"]
+RUN dotnet restore "./Edulingual.Api/Edulingual.Api.csproj"
 COPY . .
-WORKDIR "/src/EduLingual.Api"
-RUN dotnet build "./EduLingual.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/Edulingual.Api"
+RUN dotnet build "./Edulingual.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./EduLingual.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Edulingual.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "EduLingual.Api.dll"]
+ENTRYPOINT ["dotnet", "Edulingual.Api.dll"]
