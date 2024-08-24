@@ -1,4 +1,4 @@
-name: Build and Deploy to Cloud Run
+name: Build and Deploy to Google Cloud Platform
 
 on:
   push:
@@ -9,7 +9,6 @@ env:
   IMAGE_NAME: '${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}'
 
 jobs:
-
   publish:
     runs-on: ubuntu-latest
 
@@ -47,6 +46,7 @@ jobs:
                     -o StrictHostKeyChecking=no \
                     ${{ secrets.EDULINGUAL_VM_USERNAME }}@${{ secrets.EDULINGUAL_VM_IP_ADDRESS }} \
                      '
+                      sudo -i &&
                       docker ps -q | xargs -r docker stop &&
                       docker container prune -f &&
                       docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PWD }} &&
