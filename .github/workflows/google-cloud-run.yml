@@ -51,4 +51,4 @@ jobs:
                       docker container prune -f &&
                       docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PWD }} &&
                       docker image pull ${{ env.IMAGE_NAME }}
-                      docker run -d --name ${{ env.IMAGE_NAME }} -p 8080:8080 ${{ env.IMAGE_NAME }}'
+                      docker run -d --name ${{ secrets.IMAGE_NAME }} -p 8080:8080 ${{ env.IMAGE_NAME }}'
