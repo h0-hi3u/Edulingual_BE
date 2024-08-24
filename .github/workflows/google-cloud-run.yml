@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}
+  IMAGE_NAME: '${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}'
 
 jobs:
   publish:
@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build docker image
-        run: docker build -f Edulingual.Api/Dockerfile -t "${{ env.IMAGE_NAME }}"
+        run: docker build -f Edulingual.Api/Dockerfile -t "${{ env.IMAGE_NAME }}" .
       
       - name: Authenticate docker
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PWD }}
