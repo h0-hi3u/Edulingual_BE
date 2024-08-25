@@ -1,6 +1,6 @@
 ﻿namespace Edulingual.Domain.Enum
 {
-    public enum UserCourseStatus : byte
+    public enum UserCourseStatusEnum : byte
     {
         Studying,
         Finished

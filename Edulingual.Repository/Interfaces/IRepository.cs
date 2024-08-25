@@ -30,7 +30,7 @@ public interface IRepository<T> where T : class
     #endregion
 
     #region Get
-    Task<T> GetOneAsync(
+    Task<T?> GetOneAsync(
         Expression<Func<T, bool>>? predicate = null,
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
         bool isForUpdate = false);
