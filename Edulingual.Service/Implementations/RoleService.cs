@@ -48,7 +48,7 @@ public class RoleService : IRoleService
         var result = pagingRole.Mapper<ViewRoleReponse, Role>(_mapper);
         if (!result.Data.IsNullOrEmpty())
         {
-            await _dataCached.SetToCache(value: result, pageIndex: pageIndex, pageSize: pageSize, cacheTime: null);
+            await _dataCached.SetToCache(value: result, pageIndex: pageIndex, pageSize: pageSize);
         }
         return new ServiceActionResult(result);
     }

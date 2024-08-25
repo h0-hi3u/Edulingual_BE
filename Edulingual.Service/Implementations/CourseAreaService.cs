@@ -2,10 +2,12 @@
 using Edulingual.DAL.Interfaces;
 using Edulingual.Domain.Entities;
 using Edulingual.Service.Exceptions;
+using Edulingual.Service.Extensions;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Models;
 using Edulingual.Service.Request.CourseArea;
 using Edulingual.Service.Response.CourseArea;
+using System.Net;
 
 namespace Edulingual.Service.Implementations;
 
@@ -28,7 +30,7 @@ public class CourseAreaService : ICourseAreaService
         await _courseAreaRepo.AddAsync(courseArea);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
         if (!isSuccess) throw new DatabaseException($"Create fail: {createCourseAreaRequest.Name}!");
-        return new ServiceActionResult($"Create success: {createCourseAreaRequest.Name}!");
+        return new ServiceActionResult($"Create success: {createCourseAreaRequest.Name}!", httpStatusCode: HttpStatusCode.Created);
     }
 
     public async Task<ServiceActionResult> DeleteCourseArea(string id)
@@ -38,9 +40,10 @@ public class CourseAreaService : ICourseAreaService
         if (courseArea == null) throw new NotFoundException();
 
         courseArea.IsDeleted = true;
+        _courseAreaRepo.Update(courseArea);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
         if (!isSuccess) throw new DatabaseException($"Delete fail: {id}");
-        return new ServiceActionResult($"Detele success: {id}!");
+        return new ServiceActionResult($"Detele success: {courseArea.Name}!");
     }
 
     public async Task<ServiceActionResult> GetAll()
@@ -56,7 +59,7 @@ public class CourseAreaService : ICourseAreaService
             pageIndex: pageIndex,
             pageSize: pageSize
             );
-        return new ServiceActionResult(_mapper.Map<IEnumerable<ViewCourseAreaResponse>>(list));
+        return new ServiceActionResult(list.Mapper<ViewCourseAreaResponse, CourseArea>(_mapper));
     }
 
     public async Task<ServiceActionResult> GetById(string id)
@@ -64,7 +67,7 @@ public class CourseAreaService : ICourseAreaService
         if (!Guid.TryParse(id, out Guid courseAreaId)) throw new InvalidParameterException();
         var courseArea = await _courseAreaRepo.GetOneAsync(predicate: ca => ca.Id == courseAreaId && !ca.IsDeleted);
         if (courseArea == null) throw new NotFoundException();
-        return new ServiceActionResult(courseArea);
+        return new ServiceActionResult(_mapper.Map<ViewCourseAreaResponse>(courseArea));
     }
 
     public async Task<ServiceActionResult> UpdateCourseArea(UpdateCourseAreaRequest updateCourseAreaRequest)

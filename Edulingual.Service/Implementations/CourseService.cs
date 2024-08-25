@@ -11,6 +11,7 @@ using Edulingual.Service.Response.Course;
 using System.Linq.Expressions;
 using Edulingual.DAL.Extensions;
 using Edulingual.Service.Request.Search;
+using Edulingual.Common.Interfaces;
 
 namespace Edulingual.Service.Implementations;
 
@@ -19,12 +20,14 @@ public class CourseService : ICourseService
     private readonly ICourseRepository _courseRepo;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly ICurrentUser _currentUser;
 
-    public CourseService(ICourseRepository courseRepo, IUnitOfWork unitOfWork, IMapper mapper)
+    public CourseService(ICourseRepository courseRepo, IUnitOfWork unitOfWork, IMapper mapper, ICurrentUser currentUser)
     {
         _courseRepo = courseRepo;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _currentUser = currentUser;
     }
 
     public async Task<ServiceActionResult> ChangeStatusCourse(string id, CourseStatusEnum status)
@@ -114,7 +117,7 @@ public class CourseService : ICourseService
 
     public async Task<ServiceActionResult> UpdateCourse(UpdateCourseRequest updateCourseRequest)
     {
-        var course = await _courseRepo.GetOneAsync(predicate: c => c.Id == updateCourseRequest.Id);
+        var course = await _courseRepo.GetOneAsync(predicate: c => c.Id == updateCourseRequest.Id && c.CreatedBy == _currentUser.CurrentUserId() && !c.IsDeleted);
         if (course == null) throw new NotFoundException();
 
         course.Title = updateCourseRequest.Title ?? course.Title;

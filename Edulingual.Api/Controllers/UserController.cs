@@ -1,5 +1,6 @@
 ﻿using Edulingual.Api.Controllers.Base;
 using Edulingual.Domain.Enum;
+using Edulingual.Service.Constants;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Request.User;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +25,7 @@ public class UserController : BaseApiController
             async () => await _userService.GetSelfProfile().ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
+    [Authorize(Roles = RoleConstants.ADMIN, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpGet("get-paging-user-role")]
     public async Task<IActionResult> GetPagingUserWithRole([FromQuery] int pageIndex, [FromQuery] int pageSize, [FromQuery] RoleEnum roleValue)
     {
@@ -45,6 +47,7 @@ public class UserController : BaseApiController
             async () => await _userService.CreateUser(request).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
+    [Authorize]
     [HttpPut]
     public async Task<IActionResult> UpdateUser(UpdateUserRequest request)
     {
@@ -52,6 +55,7 @@ public class UserController : BaseApiController
             async () => await _userService.UpdateUser(request).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
+    [Authorize(Roles = RoleConstants.ADMIN, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpPut("change-status/{id}")]
     public async Task<IActionResult> ChangeStatus([FromRoute] string id, [FromBody] UserStatusEnum status)
     {
@@ -59,5 +63,4 @@ public class UserController : BaseApiController
             async () => await _userService.ChangeStatusUser(id, status).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
-
 }

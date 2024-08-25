@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Edulingual.Domain.Entities;
+using Edulingual.Service.Request.Course;
 using Edulingual.Service.Request.CourseArea;
 using Edulingual.Service.Request.CourseCategory;
 using Edulingual.Service.Request.CourseLanguage;
 using Edulingual.Service.Request.Role;
 using Edulingual.Service.Request.User;
+using Edulingual.Service.Response.Course;
 using Edulingual.Service.Response.CourseArea;
 using Edulingual.Service.Response.CourseCategory;
 using Edulingual.Service.Response.CourseLanguage;
@@ -18,10 +20,12 @@ public static class AutoMapperConfiguration
     public static void RegisterMaps(IMapperConfigurationExpression mapper)
     {
         CreateRoleMap(mapper);
-        CreatUserMap(mapper);
+        CreateUserMap(mapper);
         CreateRoleMap(mapper);
         CreateCourseLanguageMap(mapper);
         CreateCourseCategoryMap(mapper);
+        CreateCourseMap(mapper);
+        CreateCourseAreaMap(mapper);
     }
 
     private static void CreateRoleMap(IMapperConfigurationExpression mapper)
@@ -30,13 +34,13 @@ public static class AutoMapperConfiguration
         mapper.CreateMap<UpdateRoleRequest, Role>();
         mapper.CreateMap<Role, ViewRoleReponse>();
     }
-    private static void CreatUserMap(IMapperConfigurationExpression mapper)
+    private static void CreateUserMap(IMapperConfigurationExpression mapper)
     {
         mapper.CreateMap<CreateUserRequest, User>();
         mapper.CreateMap<UpdateRoleRequest, User>();
         mapper.CreateMap<User, ViewUserResponse>();
     }
-    private static void CreatCourseAreaMap(IMapperConfigurationExpression mapper)
+    private static void CreateCourseAreaMap(IMapperConfigurationExpression mapper)
     {
         mapper.CreateMap<CreateCourseAreaRequest, CourseArea>();
         mapper.CreateMap<UpdateCourseAreaRequest, CourseArea>();
@@ -53,5 +57,11 @@ public static class AutoMapperConfiguration
         mapper.CreateMap<CreateCourseCategoryRequest, CourseCategory>();
         mapper.CreateMap<UpdateCourseCategoryRequest, CourseCategory>();
         mapper.CreateMap<CourseCategory, ViewCourseCategoryResponse>();
+    }
+    private static void CreateCourseMap(IMapperConfigurationExpression mapper)
+    {
+        mapper.CreateMap<CreateCourseRequest, Course>();
+        mapper.CreateMap<UpdateCourseRequest, Course>();
+        mapper.CreateMap<Course, ViewCourseResponse>();
     }
 }

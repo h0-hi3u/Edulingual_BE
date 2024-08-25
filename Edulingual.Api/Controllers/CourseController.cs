@@ -1,8 +1,10 @@
 ﻿using Edulingual.Api.Controllers.Base;
 using Edulingual.Domain.Enum;
+using Edulingual.Service.Constants;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Request.Course;
 using Edulingual.Service.Request.Search;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Edulingual.Api.Controllers;
@@ -17,7 +19,7 @@ public class CourseController : BaseApiController
     {
         _courseSerivce = courseService;
     }
-
+    [Authorize(Roles = RoleConstants.ADMIN, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpPut("change-status/{id}")]
     public async Task<IActionResult> ChangeStatus([FromRoute] string id, [FromBody] CourseStatusEnum status)
     {
@@ -25,7 +27,7 @@ public class CourseController : BaseApiController
             async() => await _courseSerivce.ChangeStatusCourse(id, status).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
-
+    [Authorize(Roles = RoleConstants.TEACHER, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpPost("create-course")]
     public async Task<IActionResult> CreateCourse([FromBody] CreateCourseRequest createCourseRequest)
     {
@@ -33,6 +35,7 @@ public class CourseController : BaseApiController
             async () => await _courseSerivce.CreateCourse(createCourseRequest).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
+    [Authorize(Roles = RoleConstants.TEACHER, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCourse([FromRoute] string id)
     {
@@ -54,6 +57,7 @@ public class CourseController : BaseApiController
             async() => await _courseSerivce.SearchCourse(searchCourse).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
+    [Authorize(Roles = RoleConstants.TEACHER, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpPut("update")]
     public async Task<IActionResult> UpdateCourse(UpdateCourseRequest updateCourseRequest)
     {
