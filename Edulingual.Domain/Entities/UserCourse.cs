@@ -7,7 +7,7 @@ public class UserCourse : Auditable
 {
     public Guid UserId { get; set; }
     public Guid CourseId { get; set; }
-    public UserCourseStatus Status { get; set; } = UserCourseStatus.Studying;
+    public UserCourseStatusEnum Status { get; set; } = UserCourseStatusEnum.Studying;
 
     public virtual Course Course { get; set; } = null!;
     public virtual User User { get; set; } = null!;

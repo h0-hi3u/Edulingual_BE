@@ -1,6 +1,6 @@
 ﻿namespace Edulingual.Domain.Enum
 {
-    public enum FeedbackStatus : byte
+    public enum FeedbackStatusEnum : byte
     {
         Banned,
         Active,

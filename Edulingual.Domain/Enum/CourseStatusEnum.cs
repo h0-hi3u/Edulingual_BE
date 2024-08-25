@@ -1,6 +1,6 @@
 ﻿namespace Edulingual.Domain.Enum
 {
-    public enum CourseStatus
+    public enum CourseStatusEnum
     {
         Pending,
         Active
