@@ -2,10 +2,12 @@
 using Edulingual.DAL.Interfaces;
 using Edulingual.Domain.Entities;
 using Edulingual.Service.Exceptions;
+using Edulingual.Service.Extensions;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Models;
 using Edulingual.Service.Request.CourseLanguage;
 using Edulingual.Service.Response.CourseLanguage;
+using System.Net;
 
 namespace Edulingual.Service.Implementations;
 
@@ -28,7 +30,7 @@ public class CourseLanguageService : ICourseLanguageService
         await _courseLanguageRepo.AddAsync(courseLanguage);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
         if (!isSuccess) throw new DatabaseException($"Create fail: {createCourseLanguageRequest.Name}!");
-        return new ServiceActionResult($"Create success: {createCourseLanguageRequest.Name}!");
+        return new ServiceActionResult($"Create success: {createCourseLanguageRequest.Name}!", httpStatusCode: HttpStatusCode.Created);
     }
 
     public async Task<ServiceActionResult> DeleteCourseLanguage(string id)
@@ -38,6 +40,7 @@ public class CourseLanguageService : ICourseLanguageService
         if (courseLanguage == null) throw new NotFoundException();
 
         courseLanguage.IsDeleted = true;
+        _courseLanguageRepo.Update(courseLanguage);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
         if (!isSuccess) throw new DatabaseException($"Delete fail: {id}");
         return new ServiceActionResult($"Detele success: {id}!");
@@ -56,7 +59,7 @@ public class CourseLanguageService : ICourseLanguageService
             pageIndex: pageIndex,
             pageSize: pageSize
             );
-        return new ServiceActionResult(_mapper.Map<IEnumerable<ViewCourseLanguageReponse>>(list));
+        return new ServiceActionResult(list.Mapper<ViewCourseLanguageReponse, CourseLanguage>(_mapper));
     }
 
     public async Task<ServiceActionResult> GetById(string id)
@@ -64,7 +67,7 @@ public class CourseLanguageService : ICourseLanguageService
         if (!Guid.TryParse(id, out Guid courseLanguageId)) throw new InvalidParameterException();
         var courseLanguage = await _courseLanguageRepo.GetOneAsync(predicate: ca => ca.Id == courseLanguageId && !ca.IsDeleted);
         if (courseLanguage == null) throw new NotFoundException();
-        return new ServiceActionResult(courseLanguage);
+        return new ServiceActionResult(_mapper.Map<ViewCourseLanguageReponse>(courseLanguage));
     }
 
     public async Task<ServiceActionResult> UpdateCourseLanguage(UpdateCourseLanguageRequest updateCourseLanguageRequest)
