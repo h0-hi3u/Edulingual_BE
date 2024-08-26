@@ -17,7 +17,7 @@ public static class ReflectionHelper
     {
         if (obj == null)
         {
-            return null;
+            return null!;
         }
         else
         {

@@ -41,9 +41,7 @@ public class CourseService : ICourseService
     {
         if (!Guid.TryParse(id, out Guid courseId)) throw new InvalidParameterException();
 
-        var course = await _courseRepo.GetOneAsync(predicate: c => c.Id == courseId && !c.IsDeleted);
-        if (course == null) throw new NotFoundException();
-
+        var course = await _courseRepo.GetOneAsync(predicate: c => c.Id == courseId && !c.IsDeleted) ?? throw new NotFoundException();
         course.Status = course.Status == CourseStatusEnum.Pending ? CourseStatusEnum.Active : CourseStatusEnum.Pending;
         _courseRepo.Update(course);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
@@ -74,8 +72,8 @@ public class CourseService : ICourseService
     {
         if (!Guid.TryParse(id, out Guid courseId)) throw new InvalidParameterException();
 
-        var course = await _courseRepo.GetOneAsync(predicate: c => c.Id == courseId && !c.IsDeleted);
-        if (course == null) throw new NotFoundException();
+        var course = await _courseRepo.GetOneAsync(predicate: c => c.Id == courseId && !c.IsDeleted) 
+            ?? throw new NotFoundException();
 
         course.IsDeleted = true;
         _courseRepo.Update(course);
