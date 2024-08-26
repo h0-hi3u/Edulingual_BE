@@ -18,13 +18,19 @@ namespace Edulingual.Service.Implementations;
 public class CourseService : ICourseService
 {
     private readonly ICourseRepository _courseRepo;
+    private readonly ICourseAreaRepository _courseAreaRepo;
+    private readonly ICourseLanguageRepository _courseLanguageRepo;
+    private readonly ICourseCategoryRepository _courseCategoryRepo;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly ICurrentUser _currentUser;
 
-    public CourseService(ICourseRepository courseRepo, IUnitOfWork unitOfWork, IMapper mapper, ICurrentUser currentUser)
+    public CourseService(ICourseRepository courseRepo, ICourseAreaRepository courseAreaRepo, ICourseLanguageRepository courseLanguageRepo, ICourseCategoryRepository courseCategoryRepo, IUnitOfWork unitOfWork, IMapper mapper, ICurrentUser currentUser)
     {
         _courseRepo = courseRepo;
+        _courseAreaRepo = courseAreaRepo;
+        _courseLanguageRepo = courseLanguageRepo;
+        _courseCategoryRepo = courseCategoryRepo;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _currentUser = currentUser;
@@ -47,6 +53,13 @@ public class CourseService : ICourseService
 
     public async Task<ServiceActionResult> CreateCourse(CreateCourseRequest createCourseRequest)
     {
+        if(await _courseAreaRepo.GetOneAsync(ca => ca.Id == createCourseRequest.CourseAreaId) is null) 
+            throw new InvalidParameterException();
+        if (await _courseCategoryRepo.GetOneAsync(cc => cc.Id == createCourseRequest.CourseCategoryId) is null) 
+            throw new InvalidParameterException();
+        if (await _courseLanguageRepo.GetOneAsync(cl => cl.Id == createCourseRequest.CourseLanguageId) is null)
+            throw new InvalidParameterException();
+
         var course = _mapper.Map<Course>(createCourseRequest);
 
         await _courseRepo.AddAsync(course);
