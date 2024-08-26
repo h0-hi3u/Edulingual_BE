@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using Edulingual.DAL.Extensions;
 using Edulingual.Service.Request.Search;
 using Edulingual.Common.Interfaces;
+using Edulingual.Service.Extensions;
 
 namespace Edulingual.Service.Implementations;
 
@@ -36,19 +37,19 @@ public class CourseService : ICourseService
         _currentUser = currentUser;
     }
 
-    public async Task<ServiceActionResult> ChangeStatusCourse(string id, CourseStatusEnum status)
+    public async Task<ServiceActionResult> ChangeStatusCourse(string id)
     {
         if (!Guid.TryParse(id, out Guid courseId)) throw new InvalidParameterException();
 
         var course = await _courseRepo.GetOneAsync(predicate: c => c.Id == courseId && !c.IsDeleted);
         if (course == null) throw new NotFoundException();
 
-        course.Status = status;
+        course.Status = course.Status == CourseStatusEnum.Pending ? CourseStatusEnum.Active : CourseStatusEnum.Pending;
         _courseRepo.Update(course);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
         if (!isSuccess) throw new DatabaseException();
 
-        return new ServiceActionResult($"Change status {course.Title} success", httpStatusCode: HttpStatusCode.NoContent);
+        return new ServiceActionResult($"Change status {course.Title} success");
     }
 
     public async Task<ServiceActionResult> CreateCourse(CreateCourseRequest createCourseRequest)
@@ -61,7 +62,7 @@ public class CourseService : ICourseService
             throw new InvalidParameterException();
 
         var course = _mapper.Map<Course>(createCourseRequest);
-
+        course.OwnerId = _currentUser.CurrentUserId() ?? Guid.NewGuid();
         await _courseRepo.AddAsync(course);
         var isSucess = await _unitOfWork.SaveChangesAsync();
         if (!isSucess) throw new DatabaseException();
@@ -81,51 +82,50 @@ public class CourseService : ICourseService
         var isSucess = await _unitOfWork.SaveChangesAsync();
         if (!isSucess) throw new DatabaseException();
 
-        return new ServiceActionResult($"Delete {course.Title} success!", httpStatusCode: HttpStatusCode.NoContent);
+        return new ServiceActionResult($"Delete {course.Title} success!");
     }
 
     public async Task<ServiceActionResult> GetCoursePaging(int pageIndex, int pageSize)
     {
         var list = await _courseRepo.GetPagingAsync(
-            predicate: c => !c.IsDeleted,
+            predicate: c => !c.IsDeleted && c.Status == CourseStatusEnum.Active,
             pageIndex: pageIndex,
             pageSize: pageSize
             );
-        var result = _mapper.Map<ViewCourseResponse>(list);
-        return new ServiceActionResult(list);
+        return new ServiceActionResult(list.Mapper<ViewCourseResponse, Course>(_mapper));
     }
 
     public async Task<ServiceActionResult> SearchCourse(SearchCourse searchCourse) 
     {
-        var query = _courseRepo.GetAll();
+        IQueryable<Course> query = _courseRepo.GetAll();
 
         if(!string.IsNullOrEmpty(searchCourse.LanguageId))
         {
-            if (!Guid.TryParse(searchCourse.LanguageId, out Guid languageId)) throw new InvalidParameterException();
-            query.Where(c => c.CourseLanguageId == languageId);
+            if (!Guid.TryParse(searchCourse.LanguageId, out Guid languageId)) throw new InvalidParameterException("Invalid course language id!");
+            query = query.Where(c => c.CourseLanguageId == languageId);
         }
 
         if (!string.IsNullOrEmpty(searchCourse.AreaId)) 
         {
-            if (!Guid.TryParse(searchCourse.AreaId, out Guid areaId)) throw new InvalidParameterException();
-            query.Where(c => c.CourseAreaId == areaId);
+            if (!Guid.TryParse(searchCourse.AreaId, out Guid areaId)) throw new InvalidParameterException("Invalid course area id!");
+            query = query.Where(c => c.CourseAreaId == areaId);
         }
 
         if (!string.IsNullOrEmpty(searchCourse.CategoryId))
         {
-            if (!Guid.TryParse(searchCourse.CategoryId, out Guid categoryId)) throw new InvalidParameterException();
-            query.Where(c => c.CourseCategoryId == categoryId);
+            if (!Guid.TryParse(searchCourse.CategoryId, out Guid categoryId)) throw new InvalidParameterException("Invalid course category id!");
+            query = query.Where(c => c.CourseCategoryId == categoryId);
         }
 
         if (searchCourse.PriceFrom < 0 || searchCourse.PriceTo < 0 || (searchCourse.PriceFrom > searchCourse.PriceTo)) throw new InvalidParameterException("Invalid price search!");
         if(searchCourse.PriceFrom > 0 || searchCourse.PriceTo > 0)
         {
-            query.Where(c => c.Fee >= searchCourse.PriceFrom && c.Fee <= searchCourse.PriceTo);
+            query = query.Where(c => c.Fee >= searchCourse.PriceFrom && c.Fee <= searchCourse.PriceTo);
         }
-
-        return new ServiceActionResult(await query.ToPagingAsync(
+        var list = await query.ToPagingAsync(
             pageIndex: searchCourse.PageIndex,
-            pageSize: searchCourse.PageSize));
+            pageSize: searchCourse.PageSize);
+        return new ServiceActionResult(list.Mapper<ViewCourseResponse, Course>(_mapper));
     }
 
     public async Task<ServiceActionResult> UpdateCourse(UpdateCourseRequest updateCourseRequest)
@@ -144,6 +144,15 @@ public class CourseService : ICourseService
         _courseRepo.Update(course);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
         if (!isSuccess) throw new DatabaseException();
-        return new ServiceActionResult($"Update {course.Title} success!", httpStatusCode: HttpStatusCode.NoContent);
+        return new ServiceActionResult($"Update {course.Title} success!");
+    }
+    public async Task<ServiceActionResult> GetMyCourses(int pageIndex, int pageSize)
+    {
+        var list = await _courseRepo.GetPagingAsync(
+            predicate: c => c.CreatedBy == _currentUser.CurrentUserId() && !c.IsDeleted,
+            pageIndex: pageIndex,
+            pageSize: pageSize
+            );
+        return new ServiceActionResult(list.Mapper<ViewCourseResponse, Course>(_mapper));
     }
 }

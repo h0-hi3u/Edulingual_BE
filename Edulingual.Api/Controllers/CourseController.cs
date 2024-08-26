@@ -21,10 +21,10 @@ public class CourseController : BaseApiController
     }
     [Authorize(Roles = RoleConstants.ADMIN, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpPut("change-status/{id}")]
-    public async Task<IActionResult> ChangeStatus([FromRoute] string id, [FromBody] CourseStatusEnum status)
+    public async Task<IActionResult> ChangeStatus([FromRoute] string id)
     {
         return await ExecuteServiceFunc(
-            async() => await _courseSerivce.ChangeStatusCourse(id, status).ConfigureAwait(false)
+            async() => await _courseSerivce.ChangeStatusCourse(id).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
     [Authorize(Roles = RoleConstants.TEACHER, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
@@ -44,7 +44,7 @@ public class CourseController : BaseApiController
             ).ConfigureAwait(false);
     }
     [HttpGet("get-paging")]
-    public async Task<IActionResult> GetCoursePaging([FromQuery] int pageIndex, [FromQuery] int pageSize)
+    public async Task<IActionResult> GetCoursePaging([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10)
     {
         return await ExecuteServiceFunc(
             async() => await _courseSerivce.GetCoursePaging(pageIndex, pageSize).ConfigureAwait(false)
@@ -63,6 +63,14 @@ public class CourseController : BaseApiController
     {
         return await ExecuteServiceFunc(
             async() => await _courseSerivce.UpdateCourse(updateCourseRequest).ConfigureAwait(false)
+            ).ConfigureAwait(false);
+    }
+    [Authorize(Roles = RoleConstants.TEACHER, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
+    [HttpGet("my-coures")]
+    public async Task<IActionResult> GetMyCourses([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10)
+    {
+        return await ExecuteServiceFunc(
+            async() => await _courseSerivce.GetMyCourses(pageIndex, pageSize).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 }
