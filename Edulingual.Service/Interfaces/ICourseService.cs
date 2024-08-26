@@ -10,8 +10,9 @@ public interface ICourseService : IAutoRegisterable
 {
     Task<ServiceActionResult> GetCoursePaging(int pageIndex, int pageSize);
     Task<ServiceActionResult> SearchCourse(SearchCourse searchCourse);
-    Task<ServiceActionResult> ChangeStatusCourse(string id, CourseStatusEnum status);
+    Task<ServiceActionResult> ChangeStatusCourse(string id);
     Task<ServiceActionResult> CreateCourse(CreateCourseRequest createCourseRequest);
     Task<ServiceActionResult> UpdateCourse(UpdateCourseRequest updateCourseRequest);
     Task<ServiceActionResult> DeleteCourse(string id);
+    Task<ServiceActionResult> GetMyCourses(int pageIndex, int pageSize);
 }

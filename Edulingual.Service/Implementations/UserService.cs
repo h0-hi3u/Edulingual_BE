@@ -100,6 +100,7 @@ public class UserService : IUserService
         if (userId == null) throw new InvalidParameterException();
 
         var user = await _userRepo.GetOneAsync(predicate: u => u.Id == userId);
+        if (user == null) throw new NotFoundException();
         user.Phone = createUserRequest.Phone ?? user.Phone;
         user.FullName = createUserRequest.FullName ?? user.FullName;
         user.Description = createUserRequest.Description ?? user.Description;

@@ -5,15 +5,15 @@ namespace Edulingual.Common.Settings;
 
 public class SwaggerSettings
 {
-    public string Version { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
-    public string TermsOfServiceUrl { get; set; }
-    public string ContactName { get; set; }
-    public string ContactEmail { get; set; }
-    public string ContactUrl { get; set; }
-    public string LicenseName { get; set; }
-    public string LicenseUrl { get; set; }
+    public string Version { get; set; } = null!;
+    public string Title { get; set; } = null!;
+    public string Description { get; set; } = null!;
+    public string TermsOfServiceUrl { get; set; } = null!;
+    public string ContactName { get; set; } = null!;
+    public string ContactEmail { get; set; } = null!;
+    public string ContactUrl { get; set; } = null!;
+    public string LicenseName { get; set; } = null!;
+    public string LicenseUrl { get; set; } = null!;
     public SwaggerOptions Options { get; set; } = new();
 
     public OpenApiContact GetContact()
@@ -97,31 +97,31 @@ public class SwaggerSettings
 public class SwaggerOptions
 {
     public List<SwaggerServer> Servers { get; set; } = new();
-    public SwaggerSecurityScheme SecurityScheme { get; set; }
-    public SwaggerSecurityRequirement SecurityRequirement { get; set; }
+    public SwaggerSecurityScheme SecurityScheme { get; set; } = null!;
+    public SwaggerSecurityRequirement SecurityRequirement { get; set; } = null!;
 }
 
 public class SwaggerServer
 {
-    public string Url { get; set; }
-    public string Description { get; set; }
+    public string Url { get; set; } = null!;
+    public string Description { get; set; } = null!;
     public List<SwaggerServerVariable> Variables { get; set; } = new();
 }
 
 public class SwaggerServerVariable
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public string DefaultValue { get; set; }
+    public string Name { get; set; } = null!;
+    public string Description { get; set; } = null!;
+    public string DefaultValue { get; set; } = null!;
 }
 
 public class SwaggerSecurityScheme
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
     //public string Description { get; set; }
-    public string Schema { get; set; }
-    public string BearerFormat { get; set; }
-    public string Type { get; set; }
+    public string Schema { get; set; } = null!;
+    public string BearerFormat { get; set; } = null!;
+    public string Type { get; set; } = null!;
     //public string Location { get; set; }
 
     public SecuritySchemeType GetSecuritySchemeType()
@@ -136,8 +136,8 @@ public class SwaggerSecurityScheme
 
 public class SwaggerSecurityRequirement
 {
-    public string Type { get; set; }
-    public string Id { get; set; }
+    public string Type { get; set; } = null!;
+    public string Id { get; set; } = null!;
 
     public ReferenceType GetReferenceType()
     {
