@@ -25,11 +25,11 @@ AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 app.UseCors(CorsConstants.APP_CORS_POLICY);
 app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();

@@ -9,6 +9,6 @@ public class Feedback : Auditable
     public string? Content { get; set; } = string.Empty;
     public int Rating { get; set; }
 
-    public virtual User User { get; set; }
-    public virtual Course Course { get; set; }
+    public virtual User User { get; set; } = null!;
+    public virtual Course Course { get; set; } = null!;
 }

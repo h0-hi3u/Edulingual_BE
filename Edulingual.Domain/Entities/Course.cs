@@ -16,7 +16,7 @@ public class Course : BaseEntity
     public CourseStatusEnum Status { get; set; } = CourseStatusEnum.Pending;
 
 
-    public virtual User Owner { get; set; }
+    public virtual User Owner { get; set; } = null!;
     public virtual CourseArea CourseArea { get; set; } = null!;
     public virtual CourseCategory CourseCategory { get; set; } = null!;
     public virtual CourseLanguage CourseLanguage { get; set; } = null!;
