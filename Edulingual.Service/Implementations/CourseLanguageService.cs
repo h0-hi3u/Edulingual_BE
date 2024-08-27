@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Edulingual.Caching.Interfaces;
 using Edulingual.DAL.Interfaces;
 using Edulingual.Domain.Entities;
 using Edulingual.Service.Exceptions;
@@ -16,12 +17,14 @@ public class CourseLanguageService : ICourseLanguageService
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICourseLanguageRepository _courseLanguageRepo;
     private readonly IMapper _mapper;
+    private readonly IDataCached _dataCached;
 
-    public CourseLanguageService(IUnitOfWork unitOfWork, ICourseLanguageRepository courseLanguageRepo, IMapper mapper)
+    public CourseLanguageService(IUnitOfWork unitOfWork, ICourseLanguageRepository courseLanguageRepo, IMapper mapper, IDataCached dataCached)
     {
         _unitOfWork = unitOfWork;
         _courseLanguageRepo = courseLanguageRepo;
         _mapper = mapper;
+        _dataCached = dataCached;
     }
 
     public async Task<ServiceActionResult> CreateCourseLanguage(CreateCourseLanguageRequest createCourseLanguageRequest)
@@ -43,6 +46,8 @@ public class CourseLanguageService : ICourseLanguageService
         _courseLanguageRepo.Update(courseLanguage);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
         if (!isSuccess) throw new DatabaseException($"Delete fail: {id}");
+
+        await _dataCached.RemoveDataCache<CourseLanguage>(id: id);
         return new ServiceActionResult($"Detele success: {id}!");
     }
 
@@ -54,20 +59,32 @@ public class CourseLanguageService : ICourseLanguageService
 
     public async Task<ServiceActionResult> GetAllPaging(int pageIndex, int pageSize)
     {
+        var data = _dataCached.GetDataCache<CourseCategory>(pageIndex: pageIndex, pageSize: pageSize);
+        if (data != null) return new ServiceActionResult(data);
+
         var list = await _courseLanguageRepo.GetPagingAsync(
             predicate: ca => !ca.IsDeleted,
             pageIndex: pageIndex,
             pageSize: pageSize
             );
-        return new ServiceActionResult(list.Mapper<ViewCourseLanguageReponse, CourseLanguage>(_mapper));
+        var result = list.Mapper<ViewCourseLanguageReponse, CourseLanguage>(_mapper);
+        await _dataCached.SetToCache(value: result, pageIndex: pageIndex, pageSize: pageSize);
+
+        return new ServiceActionResult(result);
     }
 
     public async Task<ServiceActionResult> GetById(string id)
     {
         if (!Guid.TryParse(id, out Guid courseLanguageId)) throw new InvalidParameterException();
-        var courseLanguage = await _courseLanguageRepo.GetOneAsync(predicate: ca => ca.Id == courseLanguageId && !ca.IsDeleted);
-        if (courseLanguage == null) throw new NotFoundException();
-        return new ServiceActionResult(_mapper.Map<ViewCourseLanguageReponse>(courseLanguage));
+
+        var data = await _dataCached.GetDataCache<CourseLanguage>(id: id);
+        if (data != null) return new ServiceActionResult(data);
+
+        var courseLanguage = await _courseLanguageRepo.GetOneAsync(predicate: ca => ca.Id == courseLanguageId && !ca.IsDeleted) ?? throw new NotFoundException();
+        var result = _mapper.Map<ViewCourseLanguageReponse>(courseLanguage);
+        await _dataCached.SetToCache(value: result, id: id);
+
+        return new ServiceActionResult(result);
     }
 
     public async Task<ServiceActionResult> UpdateCourseLanguage(UpdateCourseLanguageRequest updateCourseLanguageRequest)
@@ -79,6 +96,7 @@ public class CourseLanguageService : ICourseLanguageService
         _courseLanguageRepo.Update(courseLanguage);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
         if (!isSuccess) throw new DatabaseException($"Update fail: {updateCourseLanguageRequest.Name}!");
+        await _dataCached.RemoveDataCache<CourseLanguage>(id: updateCourseLanguageRequest.Id.ToString());
         return new ServiceActionResult($"Update success: {updateCourseLanguageRequest.Name}");
     }
 }

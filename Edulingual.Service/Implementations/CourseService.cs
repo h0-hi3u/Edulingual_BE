@@ -13,6 +13,7 @@ using Edulingual.DAL.Extensions;
 using Edulingual.Service.Request.Search;
 using Edulingual.Common.Interfaces;
 using Edulingual.Service.Extensions;
+using Edulingual.Caching.Interfaces;
 
 namespace Edulingual.Service.Implementations;
 
@@ -25,8 +26,9 @@ public class CourseService : ICourseService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly ICurrentUser _currentUser;
+    private readonly IDataCached _dataCached;
 
-    public CourseService(ICourseRepository courseRepo, ICourseAreaRepository courseAreaRepo, ICourseLanguageRepository courseLanguageRepo, ICourseCategoryRepository courseCategoryRepo, IUnitOfWork unitOfWork, IMapper mapper, ICurrentUser currentUser)
+    public CourseService(ICourseRepository courseRepo, ICourseAreaRepository courseAreaRepo, ICourseLanguageRepository courseLanguageRepo, ICourseCategoryRepository courseCategoryRepo, IUnitOfWork unitOfWork, IMapper mapper, ICurrentUser currentUser, IDataCached dataCached)
     {
         _courseRepo = courseRepo;
         _courseAreaRepo = courseAreaRepo;
@@ -35,6 +37,7 @@ public class CourseService : ICourseService
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _currentUser = currentUser;
+        _dataCached = dataCached;
     }
 
     public async Task<ServiceActionResult> ChangeStatusCourse(string id)
@@ -79,18 +82,25 @@ public class CourseService : ICourseService
         _courseRepo.Update(course);
         var isSucess = await _unitOfWork.SaveChangesAsync();
         if (!isSucess) throw new DatabaseException();
+        await _dataCached.RemoveDataCache<Course>(id: id);
 
         return new ServiceActionResult($"Delete {course.Title} success!");
     }
 
     public async Task<ServiceActionResult> GetCoursePaging(int pageIndex, int pageSize)
     {
+        var data = _dataCached.GetDataCache<Course>(pageIndex: pageIndex, pageSize: pageSize);
+        if (data != null) return new ServiceActionResult(data);
+
         var list = await _courseRepo.GetPagingAsync(
             predicate: c => !c.IsDeleted && c.Status == CourseStatusEnum.Active,
             pageIndex: pageIndex,
             pageSize: pageSize
             );
-        return new ServiceActionResult(list.Mapper<ViewCourseResponse, Course>(_mapper));
+        var result = list.Mapper<ViewCourseResponse, Course>(_mapper);
+        await _dataCached.SetToCache(value: result, pageIndex: pageIndex, pageSize: pageSize);
+
+        return new ServiceActionResult(result);
     }
 
     public async Task<ServiceActionResult> SearchCourse(SearchCourse searchCourse) 
@@ -142,6 +152,8 @@ public class CourseService : ICourseService
         _courseRepo.Update(course);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
         if (!isSuccess) throw new DatabaseException();
+        await _dataCached.RemoveDataCache<Course>(id: updateCourseRequest.Id.ToString());
+
         return new ServiceActionResult($"Update {course.Title} success!");
     }
     public async Task<ServiceActionResult> GetMyCourses(int pageIndex, int pageSize)
