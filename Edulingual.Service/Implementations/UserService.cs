@@ -13,6 +13,7 @@ using System.Linq.Expressions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Edulingual.Service.Response.User;
 using Edulingual.Service.Extensions;
+using Edulingual.Caching.Interfaces;
 
 namespace Edulingual.Service.Implementations;
 
@@ -23,14 +24,16 @@ public class UserService : IUserService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly ICurrentUser _currentUser;
+    private readonly IDataCached _dataCached;
 
-    public UserService(IUserRepository userRepo, IRoleRepository roleRepo, IUnitOfWork unitOfWork, IMapper mapper, ICurrentUser currentUser)
+    public UserService(IUserRepository userRepo, IRoleRepository roleRepo, IUnitOfWork unitOfWork, IMapper mapper, ICurrentUser currentUser, IDataCached dataCached)
     {
         _userRepo = userRepo;
         _roleRepo = roleRepo;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _currentUser = currentUser;
+        _dataCached = dataCached;
     }
 
     public async Task<ServiceActionResult> ChangeStatusUser(string id, UserStatusEnum status)
@@ -65,25 +68,34 @@ public class UserService : IUserService
     public async Task<ServiceActionResult> GetSelfProfile()
     {   
         if (_currentUser.CurrentUserId() == null) throw new InvalidParameterException();
-        var user = await _userRepo.GetOneAsync(predicate: u => u.Id == _currentUser.CurrentUserId());
-        if (user == null) throw new NotFoundException();
 
-        return new ServiceActionResult(_mapper.Map<ViewUserResponse>(user));
+        var data = _dataCached.GetDataCache<User>(id: _currentUser.CurrentUserId().ToString()!);
+        if (data != null) return new ServiceActionResult(data);
+
+        var user = await _userRepo.GetOneAsync(predicate: u => u.Id == _currentUser.CurrentUserId()) ?? throw new NotFoundException();
+        var result = _mapper.Map<ViewUserResponse>(user);
+        await _dataCached.SetToCache(value: result, id: _currentUser.CurrentUserId().ToString()!);
+
+        return new ServiceActionResult(result);
     }
 
     public async Task<ServiceActionResult> GetUserById(string id)
     {
         if (!Guid.TryParse(id, out Guid userId)) throw new InvalidParameterException();
-        var user = await _userRepo.GetOneAsync(predicate: u => u.Id == userId && !u.IsDeleted && u.Status != UserStatusEnum.Banned);
-        if (user == null) throw new NotFoundException();
 
-        return new ServiceActionResult(_mapper.Map<ViewUserResponse>(user));
+        var data = _dataCached.GetDataCache<User>(id: id);
+        if (data != null) return new ServiceActionResult(data);
+
+        var user = await _userRepo.GetOneAsync(predicate: u => u.Id == userId && !u.IsDeleted && u.Status != UserStatusEnum.Banned) ?? throw new NotFoundException();
+        var result = _mapper.Map<ViewUserResponse>(user);
+        await _dataCached.SetToCache(value: result, id: id);
+
+        return new ServiceActionResult(result);
     }
 
     public async Task<ServiceActionResult> GetUserPagingWithRole(int pageIndex, int pageSize, RoleEnum roleValue)
     {
-        var role = await _roleRepo.GetOneAsync(predicate: r => r.Name == Enum.GetName(roleValue) && !r.IsDeleted);
-        if (role == null) throw new InvalidParameterException("Invalid role!");
+        var role = await _roleRepo.GetOneAsync(predicate: r => r.Name == Enum.GetName(roleValue) && !r.IsDeleted) ?? throw new InvalidParameterException("Invalid role!");
 
         var list = await _userRepo.GetPagingAsync(
             predicate: u => u.RoleId == role.Id && !u.IsDeleted && u.Status != UserStatusEnum.Banned,
@@ -109,6 +121,7 @@ public class UserService : IUserService
         _userRepo.Update(user);
         var isSuccess = await _unitOfWork.SaveChangesAsync();
         if (!isSuccess) throw new DatabaseException();
+        await _dataCached.RemoveDataCache<User>(id: _currentUser.CurrentUserId().ToString()!);
 
         return new ServiceActionResult("Update user success!", HttpStatusCode.NoContent);
     }
