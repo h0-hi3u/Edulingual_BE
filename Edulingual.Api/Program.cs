@@ -2,7 +2,7 @@ using Edulingual.Api.Extensions;
 using Edulingual.Caching.Extensions;
 using Edulingual.Common.Constants;
 using Edulingual.Service.Extensions;
-using EduLingual.Common.Helper;
+using Edulingual.Common.Helper;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

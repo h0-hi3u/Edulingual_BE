@@ -5,7 +5,7 @@ using Edulingual.Common.Exceptions;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
-namespace EduLingual.Common.Helper;
+namespace Edulingual.Common.Helper;
 
 public static class DatabaseHelper
 {
