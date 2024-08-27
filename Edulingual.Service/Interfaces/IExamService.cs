@@ -5,7 +5,7 @@ namespace Edulingual.Service.Interfaces;
 
 public interface IExamService
 {
-    Task<ServiceActionResult> CreateExam(IFormFile file);
+    Task<ServiceActionResult> CreateExamFromExcel(string id, IFormFile file);
     Task<ServiceActionResult> GetExam(string id);
     Task<ServiceActionResult> DeleteExam(string id);
 }

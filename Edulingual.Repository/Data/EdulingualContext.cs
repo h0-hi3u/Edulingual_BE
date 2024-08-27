@@ -3,10 +3,9 @@ using Edulingual.Common.Interfaces;
 using Edulingual.Common.Models;
 using Edulingual.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Edulingual.Domain.Interfaces;
 
-namespace EduLingual.DAL.Data;
+namespace Edulingual.DAL.Data;
 
 public class EdulingualContext : DbContext, IApplicationDbContext
 {

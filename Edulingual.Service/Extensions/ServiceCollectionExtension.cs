@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Edulingual.Common.Interfaces;
-using EduLingual.DAL.Data;
+using Edulingual.DAL.Data;
 using Edulingual.DAL.Interfaces;
 using Edulingual.Infrastructure;
 using Edulingual.Service.AutoMapper;
