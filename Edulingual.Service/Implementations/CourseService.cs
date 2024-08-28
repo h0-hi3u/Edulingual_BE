@@ -8,7 +8,7 @@ using Edulingual.Service.Exceptions;
 using System.Net;
 using AutoMapper;
 using Edulingual.Service.Response.Course;
-using System.Linq.Expressions;
+using LinqKit;
 using Edulingual.DAL.Extensions;
 using Edulingual.Service.Request.Search;
 using Edulingual.Common.Interfaces;
@@ -105,31 +105,37 @@ public class CourseService : ICourseService
 
     public async Task<ServiceActionResult> SearchCourse(SearchCourse searchCourse) 
     {
-        IQueryable<Course> query = _courseRepo.GetAll();
+        var predicate = PredicateBuilder.New<Course>();
 
-        if(!string.IsNullOrEmpty(searchCourse.LanguageId))
+        if (!string.IsNullOrEmpty(searchCourse.LanguageId))
         {
             if (!Guid.TryParse(searchCourse.LanguageId, out Guid languageId)) throw new InvalidParameterException("Invalid course language id!");
-            query = query.Where(c => c.CourseLanguageId == languageId);
+            //query = query.Where(c => c.CourseLanguageId == languageId);
+            predicate = predicate.And(c => c.CourseLanguageId == languageId);
         }
 
         if (!string.IsNullOrEmpty(searchCourse.AreaId)) 
         {
             if (!Guid.TryParse(searchCourse.AreaId, out Guid areaId)) throw new InvalidParameterException("Invalid course area id!");
-            query = query.Where(c => c.CourseAreaId == areaId);
+            //query = query.Where(c => c.CourseAreaId == areaId);
+            predicate = predicate.And(c => c.CourseAreaId == areaId);
         }
 
         if (!string.IsNullOrEmpty(searchCourse.CategoryId))
         {
             if (!Guid.TryParse(searchCourse.CategoryId, out Guid categoryId)) throw new InvalidParameterException("Invalid course category id!");
-            query = query.Where(c => c.CourseCategoryId == categoryId);
+            //query = query.Where(c => c.CourseCategoryId == categoryId);
+            predicate = predicate.And(c => c.CourseCategoryId == categoryId);
         }
 
         if (searchCourse.PriceFrom < 0 || searchCourse.PriceTo < 0 || (searchCourse.PriceFrom > searchCourse.PriceTo)) throw new InvalidParameterException("Invalid price search!");
         if(searchCourse.PriceFrom > 0 || searchCourse.PriceTo > 0)
         {
-            query = query.Where(c => c.Fee >= searchCourse.PriceFrom && c.Fee <= searchCourse.PriceTo);
+            //query = query.Where(c => c.Fee >= searchCourse.PriceFrom && c.Fee <= searchCourse.PriceTo);
+            predicate = predicate.And(c => c.Fee >= searchCourse.PriceFrom && c.Fee <= searchCourse.PriceTo);
         }
+
+        IQueryable<Course> query = _courseRepo.GetAll().Where(predicate);
         var list = await query.ToPagingAsync(
             pageIndex: searchCourse.PageIndex,
             pageSize: searchCourse.PageSize);
