@@ -70,6 +70,7 @@ public static class AutoMapperConfiguration
     private static void CreateExamMap(IMapperConfigurationExpression mapper)
     {
         mapper.CreateMap<Exam, ViewExamResponse>();
+        mapper.CreateMap<Exam, ViewExamNotQuestionResponse>();
     }
     private static void CreateQuestionMap(IMapperConfigurationExpression mapper)
     {
