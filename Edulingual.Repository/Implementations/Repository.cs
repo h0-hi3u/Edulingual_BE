@@ -8,7 +8,7 @@ using Edulingual.Common.Models;
 
 namespace Edulingual.DAL.Implementations;
 
-public abstract class Repository<T> : IRepository<T> where T : BaseEntity
+public abstract class Repository<T> : IRepository<T> where T : class
 {
     private readonly IApplicationDbContext _context;
     private readonly DbSet<T> _dbSet;
@@ -31,12 +31,12 @@ public abstract class Repository<T> : IRepository<T> where T : BaseEntity
         await _dbSet.AddRangeAsync(enities);
     }
 
-    public async Task DeleteAsync(Guid id)
-    {
-        var entity = await _dbSet.SingleOrDefaultAsync(e => e.Id == id);
-        if (entity == null) throw new ArgumentException("Not found to detele");
-        _dbSet.Remove(entity);
-    }
+    //public async Task DeleteAsync(Guid id)
+    //{
+    //    var entity = await _dbSet.SingleOrDefaultAsync(e => e.Id == id);
+    //    if (entity == null) throw new ArgumentException("Not found to detele");
+    //    _dbSet.Remove(entity);
+    //}
 
     public void DeleteRange(IEnumerable<T> enities)
     {

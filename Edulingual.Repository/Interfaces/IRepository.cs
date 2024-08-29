@@ -26,7 +26,7 @@ public interface IRepository<T> where T : class
     //void Delete(T entity);
     void Delete(T entity);
     void DeleteRange(IEnumerable<T> enities);
-    Task DeleteAsync(Guid id);
+    //Task DeleteAsync(Guid id);
     #endregion
 
     #region Get
