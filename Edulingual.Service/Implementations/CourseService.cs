@@ -89,7 +89,7 @@ public class CourseService : ICourseService
 
     public async Task<ServiceActionResult> GetCoursePaging(int pageIndex, int pageSize)
     {
-        var data = _dataCached.GetDataCache<Course>(pageIndex: pageIndex, pageSize: pageSize);
+        var data = await _dataCached.GetDataCache<Course>(pageIndex: pageIndex, pageSize: pageSize);
         if (data != null) return new ServiceActionResult(data);
 
         var list = await _courseRepo.GetPagingAsync(
