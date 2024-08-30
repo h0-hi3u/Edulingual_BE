@@ -2,7 +2,8 @@
 
 namespace Edulingual.DAL.Interfaces;
 
-public interface IUnitOfWork : IDisposable, IAutoRegisterable
+public interface IUnitOfWork : IAutoRegisterable
 {
     public Task<bool> SaveChangesAsync();
+    public void Dispose();
 }
