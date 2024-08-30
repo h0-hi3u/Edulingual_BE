@@ -4,6 +4,7 @@ using Edulingual.Service.Request.Course;
 using Edulingual.Service.Request.CourseArea;
 using Edulingual.Service.Request.CourseCategory;
 using Edulingual.Service.Request.CourseLanguage;
+using Edulingual.Service.Request.Feedback;
 using Edulingual.Service.Request.Role;
 using Edulingual.Service.Request.User;
 using Edulingual.Service.Response.Course;
@@ -29,6 +30,7 @@ public static class AutoMapperConfiguration
         CreateExamMap(mapper);
         CreateQuestionMap(mapper);
         CreateAnswerMap(mapper);
+        CreateFeedbackMap(mapper);
     }
 
     private static void CreateRoleMap(IMapperConfigurationExpression mapper)
@@ -79,5 +81,11 @@ public static class AutoMapperConfiguration
     private static void CreateAnswerMap(IMapperConfigurationExpression mapper)
     {
         mapper.CreateMap<Answer, ViewAnswerResponse>();
+    }
+    private static void CreateFeedbackMap(IMapperConfigurationExpression mapper)
+    {
+        mapper.CreateMap<CreateFeedbackRequest, Feedback>();
+        mapper.CreateMap<UpdateFeedbackRequest, Feedback>();
+        mapper.CreateMap<Feedback, ViewAnswerResponse>();
     }
 }

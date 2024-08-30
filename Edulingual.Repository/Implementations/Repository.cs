@@ -60,7 +60,7 @@ public abstract class Repository<T> : IRepository<T> where T : class
     public async Task<T?> GetOneAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, bool isForUpdate = false)
     {
         IQueryable<T> query = _dbSet;
-        if(!isForUpdate) query= query.AsNoTracking();
+        if(!isForUpdate) query = query.AsNoTracking();
         if (include != null) query = include(query);
         if (predicate != null) return await query.SingleOrDefaultAsync(predicate);
         return await query.SingleOrDefaultAsync();
