@@ -1,5 +1,7 @@
 ﻿using Edulingual.Api.Controllers.Base;
+using Edulingual.Service.Constants;
 using Edulingual.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Edulingual.Api.Controllers;
@@ -14,14 +16,15 @@ public class ExamController : BaseApiController
     {
         _examService = examService;
     }
-    [HttpGet("full-exam/{id}")]
-    public async Task<IActionResult> GetFullExam([FromRoute] string id)
+    [Authorize]
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetExam([FromRoute] string id)
     {
         return await ExecuteServiceFunc(
             async() => await _examService.GetExam(id).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
-
+    [Authorize(Roles = RoleConstants.TEACHER, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteExam([FromRoute] string id)
     {
@@ -29,9 +32,9 @@ public class ExamController : BaseApiController
             async() => await _examService.DeleteExam(id).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
-
+    [Authorize(Roles = RoleConstants.TEACHER, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpPost("create-exam-excel/{id}")]
-    public async Task<IActionResult> CreateExamFromExcel([FromRoute] string id, [FromBody] IFormFile file)
+    public async Task<IActionResult> CreateExamFromExcel([FromRoute] string id, IFormFile file)
     {
         return await ExecuteServiceFunc(
             async() => await _examService.CreateExamFromExcel(id, file).ConfigureAwait(false)
