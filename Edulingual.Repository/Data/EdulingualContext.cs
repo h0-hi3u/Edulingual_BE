@@ -4,6 +4,8 @@ using Edulingual.Common.Models;
 using Edulingual.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Edulingual.Domain.Interfaces;
+using Edulingual.Domain.Entities;
+using System.Text;
 
 namespace Edulingual.DAL.Data;
 
@@ -40,7 +42,7 @@ public class EdulingualContext : DbContext, IApplicationDbContext
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        foreach(var entry in ChangeTracker.Entries<Auditable>())
+        foreach (var entry in ChangeTracker.Entries<Auditable>())
         {
             switch (entry.State)
             {

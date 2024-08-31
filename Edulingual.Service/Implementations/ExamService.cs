@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Edulingual.Service.Response.Exam;
 using Edulingual.Common.Interfaces;
 using OfficeOpenXml;
-using Azure.Core;
 
 namespace Edulingual.Service.Implementations;
 
@@ -92,7 +91,7 @@ public class ExamService : IExamService
     {
         if (!Guid.TryParse(id, out Guid examId)) throw new InvalidParameterException();
 
-        var exam = await _examRepo.GetOneAsync(predicate: e => e.Id == examId) ?? throw new NotFoundException();
+        var exam = await _examRepo.GetOneAsync(predicate: e => e.Id == examId && e.CreatedBy == _currentUser.CurrentUserId()) ?? throw new NotFoundException();
 
         exam.IsDeleted = true;
         _examRepo.Update(exam);
@@ -107,7 +106,7 @@ public class ExamService : IExamService
     {
         if (!Guid.TryParse(id, out Guid examId)) throw new InvalidParameterException();
 
-        var data = _dataCached.GetDataCache<Exam>(id: id);
+        var data = await _dataCached.GetDataCache<Exam>(id: id);
         if (data != null) return new ServiceActionResult(data);
 
         var exam = await _examRepo.GetOneAsync(

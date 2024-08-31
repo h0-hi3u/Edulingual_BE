@@ -4,9 +4,11 @@ using Edulingual.Common.Constants;
 using Edulingual.Service.Extensions;
 using Edulingual.Common.Helper;
 using Serilog;
+using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
 
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 DatabaseHelper.InitConfiguration(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();

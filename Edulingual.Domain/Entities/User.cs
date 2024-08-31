@@ -23,7 +23,7 @@ namespace Edulingual.Domain.Entities
         public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
         public virtual ICollection<UserCourse> UserCourses { get; set; } = new List<UserCourse>();
         public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
-        public virtual ICollection<Exam> Exams { get; set; } = new List<Exam>();
+        //public virtual ICollection<Exam> Exams { get; set; } = new List<Exam>();
         public virtual ICollection<UserExam> UserExams { get; set; } = new List<UserExam>();
     }
 }

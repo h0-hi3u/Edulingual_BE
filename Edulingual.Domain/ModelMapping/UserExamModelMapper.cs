@@ -12,8 +12,7 @@ public class UserExamModelMapper : IModelMapper
         {
             entity.ToTable(nameof(UserExam));
 
-            entity.HasKey(e => new {e.UserId, e.ExamId});
-            entity.Property(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.Score);
             entity.Property(e => e.TotalQuestionRight);
             entity.Property(e => e.CreatedAt).HasColumnName("CreateAt");
@@ -21,7 +20,8 @@ public class UserExamModelMapper : IModelMapper
             entity.Property(e => e.UpdatedAt).HasColumnName("UpdateAt");
             entity.Property(e => e.UpdatedBy).HasColumnName("UpdateBy");
 
-            entity.HasOne(ue => ue.User).WithMany(u => u.UserExams)
+            entity.HasOne(ue => ue.User)
+                .WithMany(u => u.UserExams)
                 .HasForeignKey(ue => ue.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
