@@ -8,5 +8,4 @@ public class ViewAnswerResponse
     public string Content { get; set; } = string.Empty;
     public bool IsCorrect { get; set; } = false;
     public Guid QuestionId { get; set; }
-    public ICollection<ViewQuestionResponse> Questions { get; set; } = [];
 }
