@@ -2,6 +2,7 @@
 
 public class ViewQuestionResponse
 {
+    public Guid Id { get; set; }
     public string Content { get; set; } = string.Empty;
     public double Point { get; set; } = 0;
     public Guid ExamId { get; set; }

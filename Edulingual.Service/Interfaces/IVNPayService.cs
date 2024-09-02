@@ -1,9 +1,9 @@
-﻿using Edulingual.Service.Models;
+﻿using Edulingual.Common.Interfaces;
+using Edulingual.Service.Models;
 
 namespace Edulingual.Service.Interfaces;
 
-public interface IVNPayService
+public interface IVNPayService : IAutoRegisterable
 {
-    string CreatePaymentUrl(int amount);
-    Task<ServiceActionResult> CreatePaymentVNPay(Guid userId, int amount, Guid courseId);
+    Task<ServiceActionResult> CreatePaymentUrl(int amount, string courseId);
 }
