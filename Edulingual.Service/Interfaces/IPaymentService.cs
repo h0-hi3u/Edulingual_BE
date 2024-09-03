@@ -7,5 +7,5 @@ public interface IPaymentService : IAutoRegisterable
 {
     Task<ServiceActionResult> GetMyPayments(int pageIndex, int pageSize);
     Task<ServiceActionResult> GetPayment(string id);
-    Task<ServiceActionResult> CreatePaymentVNPay(Guid userId, int amount, Guid courseId);
+    Task<ServiceActionResult> CreatePaymentVNPay(Guid userId, int amount, int vnp_ResponseCode, Guid courseId);
 }

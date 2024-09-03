@@ -4,6 +4,7 @@ using Edulingual.DAL.Data;
 using Edulingual.DAL.Interfaces;
 using Edulingual.Infrastructure;
 using Edulingual.Service.AutoMapper;
+using Edulingual.Service.Library;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Edulingual.Service.Extensions;
@@ -15,6 +16,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<IApplicationDbContext, EdulingualContext>();
         services.AddScoped<EdulingualContext>();
         services.AddScoped<ICurrentUser, CurrentUser>();
+        services.AddSingleton<VnPayLibrary>();
 
         var registerableTypes = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(assembly => assembly.GetTypes())

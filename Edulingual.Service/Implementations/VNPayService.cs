@@ -29,7 +29,7 @@ public class VNPayService : IVNPayService
         _contextAccessor = contextAccessor;
         _courseRepo = courseRepo;
     }
-    public async Task<ServiceActionResult> CreatePaymentUrl(int amount, string courseId)
+    public async Task<ServiceActionResult> CreatePaymentUrl(string courseId)
     {
         if (!Guid.TryParse(courseId, out Guid _courseId)) throw new InvalidParameterException();
 
@@ -42,12 +42,12 @@ public class VNPayService : IVNPayService
         var vnp_Url = vnpayModel.Url;
         var vnp_ReturnUrl = vnpayModel.ReturnUrl;
         var vnp_CancelUrl = vnpayModel.CancelUrl;
-        var total = amount * 100000;
+        var total = course.Fee * 100000;
         var random = new Random();
         var txnRef = random.Next(1, 100000).ToString();
         var clientIp = _contextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "127.0.0.1";
 
-        vnp_ReturnUrl = $"{vnp_ReturnUrl}?userId={_currenUser.CurrentUserId()}&amount={amount}&courseId={courseId}";
+        vnp_ReturnUrl = $"{vnp_ReturnUrl}?userId={_currenUser.CurrentUserId()}&amount={course.Fee}&courseId={courseId}";
 
         _vpnPayLibrary.AddRequestData("vnp_Version", "2.1.0");
         _vpnPayLibrary.AddRequestData("vnp_Command", "pay");
