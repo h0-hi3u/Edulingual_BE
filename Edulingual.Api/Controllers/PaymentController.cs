@@ -23,4 +23,22 @@ public class PaymentController : BaseApiController
             async() => await _paymentService.CreatePaymentVNPay(userId, amount, vnp_ResponseCode, courseId).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
+
+    [HttpGet("my-payments")]
+    public async Task<IActionResult> GetMyPayments([FromQuery] int pageIndex, [FromQuery] int pageSize) 
+    {
+        return await ExecuteServiceFunc(
+            async() => await _paymentService.GetMyPayments(pageIndex, pageSize).ConfigureAwait(false)
+            ).ConfigureAwait(false);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetPayment([FromRoute] string id)
+    {
+        return await ExecuteServiceFunc(
+            async() => await _paymentService.GetPayment(id).ConfigureAwait(false)
+            ).ConfigureAwait(false);
+    }
+
+
 }

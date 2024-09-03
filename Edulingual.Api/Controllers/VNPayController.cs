@@ -19,10 +19,10 @@ public class VNPayController : BaseApiController
 
     [Authorize]
     [HttpGet]
-    public async Task<IActionResult> CreateUrlPayment(int amount, string courseId) 
+    public async Task<IActionResult> CreateUrlPayment(string courseId) 
     {
         return await ExecuteServiceFunc(
-            async() => await _vNPayService.CreatePaymentUrl(amount, courseId).ConfigureAwait(false)
+            async() => await _vNPayService.CreatePaymentUrl(courseId).ConfigureAwait(false)
             ).ConfigureAwait(false);
     } 
 }

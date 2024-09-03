@@ -5,5 +5,5 @@ namespace Edulingual.Service.Interfaces;
 
 public interface IVNPayService : IAutoRegisterable
 {
-    Task<ServiceActionResult> CreatePaymentUrl(int amount, string courseId);
+    Task<ServiceActionResult> CreatePaymentUrl(string courseId);
 }
