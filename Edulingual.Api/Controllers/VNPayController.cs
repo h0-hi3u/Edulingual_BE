@@ -1,5 +1,6 @@
 ﻿using Edulingual.Api.Controllers.Base;
 using Edulingual.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
@@ -16,6 +17,7 @@ public class VNPayController : BaseApiController
         _vNPayService = vNPayService;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> CreateUrlPayment(int amount, string courseId) 
     {
