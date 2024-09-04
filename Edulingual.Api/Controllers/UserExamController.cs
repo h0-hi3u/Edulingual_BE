@@ -6,8 +6,6 @@ using OfficeOpenXml.Utils;
 
 namespace Edulingual.Api.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
 public class UserExamController : BaseApiController
 {
     private readonly IUserExamService _userExamService;

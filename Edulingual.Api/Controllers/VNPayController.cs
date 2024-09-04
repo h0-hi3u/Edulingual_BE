@@ -6,8 +6,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Edulingual.Api.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
 public class VNPayController : BaseApiController
 {
     private readonly IVNPayService _vNPayService;

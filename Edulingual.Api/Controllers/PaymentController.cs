@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Edulingual.Api.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
 public class PaymentController : BaseApiController
 {
     private readonly IPaymentService _paymentService;
@@ -15,8 +13,7 @@ public class PaymentController : BaseApiController
         _paymentService = paymentService;
     }
     
-
-    [HttpGet("create-payment")]
+    [HttpGet("vnpay-payment")]
     public async Task<IActionResult> CreatePayment([FromQuery] Guid userId, [FromQuery] int amount, [FromQuery] int vnp_ResponseCode, [FromQuery] Guid courseId)
     {
         return await ExecuteServiceFunc(
@@ -39,6 +36,4 @@ public class PaymentController : BaseApiController
             async() => await _paymentService.GetPayment(id).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
-
-
 }

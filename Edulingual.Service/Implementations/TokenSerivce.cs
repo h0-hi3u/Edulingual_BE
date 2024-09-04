@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Edulingual.Service.Implementations;
 
-public class TokenSerivce : ITokenService
+public abstract class TokenSerivce : ITokenService
 {
     private readonly JwtSettings _jwtSettings;
 

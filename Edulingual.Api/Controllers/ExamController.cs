@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Edulingual.Api.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
 public class ExamController : BaseApiController
 {
     private readonly IExamService _examService;

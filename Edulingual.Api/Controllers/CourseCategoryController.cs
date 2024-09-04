@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Edulingual.Api.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
 public class CourseCategoryController : BaseApiController
 {
     private readonly ICourseCategoryService _courseCateogoryService;
