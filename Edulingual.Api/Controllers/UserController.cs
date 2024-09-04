@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Edulingual.Api.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
 public class UserController : BaseApiController
 {
     private readonly IUserService _userService;

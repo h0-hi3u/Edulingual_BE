@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Edulingual.Api.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
 public class CourseLanguageController : BaseApiController
 {
     private readonly ICourseLanguageService _courseLanguageService;

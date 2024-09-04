@@ -70,6 +70,7 @@ public class CourseAreaService : ICourseAreaService
             pageIndex: pageIndex,
             pageSize: pageSize
             );
+
         var result = list.Mapper<ViewCourseAreaResponse, CourseArea>(_mapper);
 
         await _dataCached.SetToCache(value: result, pageIndex: pageIndex, pageSize: pageSize);
