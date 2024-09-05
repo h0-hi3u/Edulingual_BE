@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Edulingual.Api.Controllers;
 
-public class FeedbackController : BaseApiController
+public class FeedbacksController : BaseApiController
 {
     private readonly IFeedbachSerivce _feedbackService;
 
-    public FeedbackController(IFeedbachSerivce feedbackService)
+    public FeedbacksController(IFeedbachSerivce feedbackService)
     {
         _feedbackService = feedbackService;
     }
+
     [Authorize(Roles = RoleConstants.STUDENT, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpPost]
     public async Task<IActionResult> CreateFeedback(CreateFeedbackRequest createFeedbackRequest)
@@ -24,21 +25,23 @@ public class FeedbackController : BaseApiController
             ).ConfigureAwait(false);
     }
 
-    [HttpGet("feedback-of-course/{id}")]
+    [HttpGet("{id}/feedback")]
     public async Task<IActionResult> GetFeedbackOfCourse([FromRoute] string id, [FromQuery] int pageIndex, [FromQuery] int pageSize)
     {
         return await ExecuteServiceFunc(
             async() => await _feedbackService.GetFeedbackOfCourse(id, pageIndex, pageSize).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
+
     [Authorize(Roles = RoleConstants.STUDENT, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
-    [HttpGet("my-feedback-course/{id}")]
+    [HttpGet("{id}/my-feedback")]
     public async Task<IActionResult> GetMyFeedbackInCourse([FromRoute] string id)
     {
         return await ExecuteServiceFunc(
             async() => await _feedbackService.GetMyFeedbackInCourse(id).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
+
     [Authorize(Roles = RoleConstants.ADMIN, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteFeedback([FromRoute] string id)
@@ -47,6 +50,7 @@ public class FeedbackController : BaseApiController
             async() => await _feedbackService.DeleteFeedback(id).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
+
     [Authorize(Roles = RoleConstants.STUDENT, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpPut]
     public async Task<IActionResult> UpdateFeedback([FromBody] UpdateFeedbackRequest updateFeedbackRequest)

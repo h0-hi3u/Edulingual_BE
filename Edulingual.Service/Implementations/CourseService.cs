@@ -142,9 +142,11 @@ public class CourseService : ICourseService
         return new ServiceActionResult(list.Mapper<ViewCourseResponse, Course>(_mapper));
     }
 
-    public async Task<ServiceActionResult> UpdateCourse(UpdateCourseRequest updateCourseRequest)
+    public async Task<ServiceActionResult> UpdateCourse(UpdateCourseRequest updateCourseRequest, string id)
     {
-        var course = await _courseRepo.GetOneAsync(predicate: c => c.Id == updateCourseRequest.Id && c.CreatedBy == _currentUser.CurrentUserId() && !c.IsDeleted);
+        if (!Guid.TryParse(id, out Guid courseId)) throw new InvalidParameterException();
+
+        var course = await _courseRepo.GetOneAsync(predicate: c => c.Id == courseId && c.CreatedBy == _currentUser.CurrentUserId() && !c.IsDeleted);
         if (course == null) throw new NotFoundException();
 
         course.Title = updateCourseRequest.Title ?? course.Title;

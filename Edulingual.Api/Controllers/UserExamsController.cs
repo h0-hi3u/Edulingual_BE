@@ -6,16 +6,16 @@ using OfficeOpenXml.Utils;
 
 namespace Edulingual.Api.Controllers;
 
-public class UserExamController : BaseApiController
+public class UserExamsController : BaseApiController
 {
     private readonly IUserExamService _userExamService;
 
-    public UserExamController(IUserExamService userExamService)
+    public UserExamsController(IUserExamService userExamService)
     {
         _userExamService = userExamService;
     }
 
-    [HttpGet("my-exam-done/{id}")]
+    [HttpGet("{id}/my-exams")]
     public async Task<IActionResult> GetExamDone([FromRoute] string id, [FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10)
     {
         return await ExecuteServiceFunc(
@@ -23,7 +23,7 @@ public class UserExamController : BaseApiController
             ).ConfigureAwait(false);
     }
 
-    [HttpGet("all-exam-in-course/{id}")]
+    [HttpGet("{id}/exams-in-course")]
     public async Task<IActionResult> GetAllExamInCourse([FromRoute] string id)
     {
         return await ExecuteServiceFunc(

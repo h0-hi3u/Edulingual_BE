@@ -12,7 +12,7 @@ public interface ICourseService : IAutoRegisterable
     Task<ServiceActionResult> SearchCourse(SearchCourse searchCourse);
     Task<ServiceActionResult> ChangeStatusCourse(string id);
     Task<ServiceActionResult> CreateCourse(CreateCourseRequest createCourseRequest);
-    Task<ServiceActionResult> UpdateCourse(UpdateCourseRequest updateCourseRequest);
+    Task<ServiceActionResult> UpdateCourse(UpdateCourseRequest updateCourseRequest, string id);
     Task<ServiceActionResult> DeleteCourse(string id);
     Task<ServiceActionResult> GetMyCourses(int pageIndex, int pageSize);
 }
