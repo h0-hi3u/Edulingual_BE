@@ -1,19 +1,19 @@
-﻿using Edulingual.DAL.Interfaces;
-using Edulingual.Domain.Enum;
+﻿using AutoMapper;
+using Edulingual.Caching.Interfaces;
+using Edulingual.Common.Interfaces;
+using Edulingual.DAL.Extensions;
+using Edulingual.DAL.Interfaces;
 using Edulingual.Domain.Entities;
+using Edulingual.Domain.Enum;
+using Edulingual.Service.Exceptions;
+using Edulingual.Service.Extensions;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Models;
 using Edulingual.Service.Request.Course;
-using Edulingual.Service.Exceptions;
-using System.Net;
-using AutoMapper;
+using Edulingual.Service.Request.Search;
 using Edulingual.Service.Response.Course;
 using LinqKit;
-using Edulingual.DAL.Extensions;
-using Edulingual.Service.Request.Search;
-using Edulingual.Common.Interfaces;
-using Edulingual.Service.Extensions;
-using Edulingual.Caching.Interfaces;
+using System.Net;
 
 namespace Edulingual.Service.Implementations;
 
@@ -55,9 +55,9 @@ public class CourseService : ICourseService
 
     public async Task<ServiceActionResult> CreateCourse(CreateCourseRequest createCourseRequest)
     {
-        if(await _courseAreaRepo.GetOneAsync(ca => ca.Id == createCourseRequest.CourseAreaId) is null) 
+        if (await _courseAreaRepo.GetOneAsync(ca => ca.Id == createCourseRequest.CourseAreaId) is null)
             throw new InvalidParameterException();
-        if (await _courseCategoryRepo.GetOneAsync(cc => cc.Id == createCourseRequest.CourseCategoryId) is null) 
+        if (await _courseCategoryRepo.GetOneAsync(cc => cc.Id == createCourseRequest.CourseCategoryId) is null)
             throw new InvalidParameterException();
         if (await _courseLanguageRepo.GetOneAsync(cl => cl.Id == createCourseRequest.CourseLanguageId) is null)
             throw new InvalidParameterException();
@@ -75,7 +75,7 @@ public class CourseService : ICourseService
     {
         if (!Guid.TryParse(id, out Guid courseId)) throw new InvalidParameterException();
 
-        var course = await _courseRepo.GetOneAsync(predicate: c => c.Id == courseId && !c.IsDeleted) 
+        var course = await _courseRepo.GetOneAsync(predicate: c => c.Id == courseId && !c.IsDeleted)
             ?? throw new NotFoundException();
 
         course.IsDeleted = true;
@@ -103,7 +103,7 @@ public class CourseService : ICourseService
         return new ServiceActionResult(result);
     }
 
-    public async Task<ServiceActionResult> SearchCourse(SearchCourse searchCourse) 
+    public async Task<ServiceActionResult> SearchCourse(SearchCourse searchCourse)
     {
         var predicate = PredicateBuilder.New<Course>();
 
@@ -114,7 +114,7 @@ public class CourseService : ICourseService
             predicate = predicate.And(c => c.CourseLanguageId == languageId);
         }
 
-        if (!string.IsNullOrEmpty(searchCourse.AreaId)) 
+        if (!string.IsNullOrEmpty(searchCourse.AreaId))
         {
             if (!Guid.TryParse(searchCourse.AreaId, out Guid areaId)) throw new InvalidParameterException("Invalid course area id!");
             //query = query.Where(c => c.CourseAreaId == areaId);
@@ -129,7 +129,7 @@ public class CourseService : ICourseService
         }
 
         if (searchCourse.PriceFrom < 0 || searchCourse.PriceTo < 0 || (searchCourse.PriceFrom > searchCourse.PriceTo)) throw new InvalidParameterException("Invalid price search!");
-        if(searchCourse.PriceFrom > 0 || searchCourse.PriceTo > 0)
+        if (searchCourse.PriceFrom > 0 || searchCourse.PriceTo > 0)
         {
             //query = query.Where(c => c.Fee >= searchCourse.PriceFrom && c.Fee <= searchCourse.PriceTo);
             predicate = predicate.And(c => c.Fee >= searchCourse.PriceFrom && c.Fee <= searchCourse.PriceTo);

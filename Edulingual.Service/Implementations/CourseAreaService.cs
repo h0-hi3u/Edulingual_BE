@@ -9,7 +9,6 @@ using Edulingual.Service.Models;
 using Edulingual.Service.Request.CourseArea;
 using Edulingual.Service.Response.CourseArea;
 using System.Net;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Edulingual.Service.Implementations;
 
@@ -62,9 +61,9 @@ public class CourseAreaService : ICourseAreaService
     {
         if (pageIndex < 1 || pageSize < 1) throw new InvalidParameterException();
         var data = await _dataCached.GetDataCache<CourseArea>(pageIndex: pageIndex, pageSize: pageSize);
-        if (data != null) 
+        if (data != null)
             return new ServiceActionResult(data);
-        
+
         var list = await _courseAreaRepo.GetPagingAsync(
             predicate: ca => !ca.IsDeleted,
             pageIndex: pageIndex,
@@ -81,7 +80,7 @@ public class CourseAreaService : ICourseAreaService
     {
         if (!Guid.TryParse(id, out Guid courseAreaId)) throw new InvalidParameterException();
         var data = _dataCached.GetDataCache<CourseArea>(id: id);
-        if (data != null) 
+        if (data != null)
             return new ServiceActionResult(data);
 
         var courseArea = await _courseAreaRepo.GetOneAsync(predicate: ca => ca.Id == courseAreaId && !ca.IsDeleted) ?? throw new NotFoundException();

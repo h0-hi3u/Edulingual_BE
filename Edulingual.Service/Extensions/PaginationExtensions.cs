@@ -5,7 +5,7 @@ namespace Edulingual.Service.Extensions;
 
 public static class PaginationExtensions
 {
-    public static IPaginate<T> Mapper<T,F>(this IPaginate<F> paginate, IMapper mapper)
+    public static IPaginate<T> Mapper<T, F>(this IPaginate<F> paginate, IMapper mapper)
     {
         return new Paginate<T>
         {

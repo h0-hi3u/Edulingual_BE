@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Edulingual.Api.Controllers.Base;
+﻿using Edulingual.Api.Controllers.Base;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Request.Authentication;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Edulingual.Api.Controllers;
 

@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Edulingual.Api.Controllers.Base;
+﻿using Edulingual.Api.Controllers.Base;
+using Edulingual.Service.Constants;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Request.Feedback;
-using Edulingual.Service.Constants;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Edulingual.Api.Controllers;
 
@@ -21,7 +21,7 @@ public class FeedbacksController : BaseApiController
     public async Task<IActionResult> CreateFeedback(CreateFeedbackRequest createFeedbackRequest)
     {
         return await ExecuteServiceFunc(
-            async() => await _feedbackService.CreateFeedback(createFeedbackRequest).ConfigureAwait(false)
+            async () => await _feedbackService.CreateFeedback(createFeedbackRequest).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 
@@ -29,7 +29,7 @@ public class FeedbacksController : BaseApiController
     public async Task<IActionResult> GetFeedbackOfCourse([FromRoute] string id, [FromQuery] int pageIndex, [FromQuery] int pageSize)
     {
         return await ExecuteServiceFunc(
-            async() => await _feedbackService.GetFeedbackOfCourse(id, pageIndex, pageSize).ConfigureAwait(false)
+            async () => await _feedbackService.GetFeedbackOfCourse(id, pageIndex, pageSize).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 
@@ -38,7 +38,7 @@ public class FeedbacksController : BaseApiController
     public async Task<IActionResult> GetMyFeedbackInCourse([FromRoute] string id)
     {
         return await ExecuteServiceFunc(
-            async() => await _feedbackService.GetMyFeedbackInCourse(id).ConfigureAwait(false)
+            async () => await _feedbackService.GetMyFeedbackInCourse(id).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 
@@ -47,7 +47,7 @@ public class FeedbacksController : BaseApiController
     public async Task<IActionResult> DeleteFeedback([FromRoute] string id)
     {
         return await ExecuteServiceFunc(
-            async() => await _feedbackService.DeleteFeedback(id).ConfigureAwait(false)
+            async () => await _feedbackService.DeleteFeedback(id).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 
@@ -56,7 +56,7 @@ public class FeedbacksController : BaseApiController
     public async Task<IActionResult> UpdateFeedback([FromBody] UpdateFeedbackRequest updateFeedbackRequest)
     {
         return await ExecuteServiceFunc(
-            async() => await _feedbackService.UpdateFeedback(updateFeedbackRequest).ConfigureAwait(false)
+            async () => await _feedbackService.UpdateFeedback(updateFeedbackRequest).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 }

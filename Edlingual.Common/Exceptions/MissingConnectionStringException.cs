@@ -11,7 +11,7 @@ public class MissingConnectionStringException : ArgumentNullException
         _customMessage = customMessage;
     }
 
-    public MissingConnectionStringException() 
+    public MissingConnectionStringException()
     {
         _customMessage = "Can not find connection string";
     }

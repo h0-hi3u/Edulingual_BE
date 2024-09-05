@@ -10,7 +10,7 @@ public class MissingCorsSettingsException : ArgumentNullException
     {
         _customMessage = customMessage;
     }
-    public MissingCorsSettingsException() 
+    public MissingCorsSettingsException()
     {
         _customMessage = "Can not find Cors settings!";
     }

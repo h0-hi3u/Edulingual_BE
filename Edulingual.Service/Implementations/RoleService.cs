@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Edulingual.Caching.Interfaces;
 using Edulingual.DAL.Interfaces;
 using Edulingual.Domain.Entities;
 using Edulingual.Service.Exceptions;
@@ -7,13 +8,8 @@ using Edulingual.Service.Interfaces;
 using Edulingual.Service.Models;
 using Edulingual.Service.Request.Role;
 using Edulingual.Service.Response.Role;
-using Microsoft.Extensions.Caching.Distributed;
-using System.Net;
-using Newtonsoft.Json;
-using Edulingual.Caching.Helper;
-using Edulingual.Caching.Interfaces;
 using Microsoft.IdentityModel.Tokens;
-using Edulingual.Common.Models;
+using System.Net;
 
 namespace Edulingual.Service.Implementations;
 
@@ -37,7 +33,7 @@ public class RoleService : IRoleService
         if (pageIndex < 1 || pageSize < 1) throw new InvalidParameterException();
 
         var dataFromCached = await _dataCached.GetDataCache<Role>(pageIndex: pageIndex, pageSize: pageSize);
-        if (dataFromCached != null) 
+        if (dataFromCached != null)
         {
             return new ServiceActionResult(dataFromCached);
         }
@@ -79,9 +75,9 @@ public class RoleService : IRoleService
 
     public async Task<ServiceActionResult> DeleteRole(string id)
     {
-        if(!Guid.TryParse(id, out Guid roleId)) throw new InvalidParameterException();
+        if (!Guid.TryParse(id, out Guid roleId)) throw new InvalidParameterException();
 
-        if(await _dataCached.GetDataCache<Role>(id) is not null)
+        if (await _dataCached.GetDataCache<Role>(id) is not null)
         {
             await _dataCached.RemoveDataCache<Role>(id);
         }
@@ -98,7 +94,7 @@ public class RoleService : IRoleService
     public async Task<ServiceActionResult> UpdateRole(UpdateRoleRequest updateRoleRequest, string id)
     {
         if (!Guid.TryParse(id, out Guid roleId)) throw new InvalidParameterException();
-        if(roleId != updateRoleRequest.Id) throw new InvalidParameterException();
+        if (roleId != updateRoleRequest.Id) throw new InvalidParameterException();
 
         if (await _dataCached.GetDataCache<Role>(id) is not null)
         {

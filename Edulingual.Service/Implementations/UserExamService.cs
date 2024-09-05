@@ -1,17 +1,17 @@
-﻿using Edulingual.DAL.Interfaces;
+﻿using AutoMapper;
+using Edulingual.Common.Interfaces;
+using Edulingual.DAL.Interfaces;
+using Edulingual.Domain.Entities;
+using Edulingual.Domain.Enum;
+using Edulingual.Service.Exceptions;
+using Edulingual.Service.Extensions;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Models;
 using Edulingual.Service.Request.Exam;
-using Microsoft.EntityFrameworkCore;
-using Edulingual.Service.Exceptions;
-using Edulingual.Common.Interfaces;
-using Edulingual.Domain.Enum;
-using Edulingual.Domain.Entities;
-using System.Net;
-using AutoMapper;
 using Edulingual.Service.Response.Exam;
-using Edulingual.Service.Extensions;
 using Edulingual.Service.Response.User;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace Edulingual.Service.Implementations;
 
@@ -50,11 +50,11 @@ public class UserExamService : IUserExamService
             ) ?? throw new InvalidParameterException($"User do not exists in course {exam.Course.Title}!");
 
         double totalRightQuestion = 0;
-        
-        foreach(var a in createExamResultRequest.AnswerId)
+
+        foreach (var a in createExamResultRequest.AnswerId)
         {
             var answer = await _answerRepo.GetOneAsync(predicate: aw => aw.Id == a);
-            if(answer != null && answer.IsCorrect)
+            if (answer != null && answer.IsCorrect)
             {
                 totalRightQuestion += 1;
             }

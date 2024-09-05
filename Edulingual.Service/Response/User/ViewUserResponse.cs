@@ -1,8 +1,4 @@
-﻿using Edulingual.Service.Attributes;
-using Edulingual.Service.Constants;
-using System.ComponentModel.DataAnnotations;
-
-namespace Edulingual.Service.Response.User;
+﻿namespace Edulingual.Service.Response.User;
 
 public class ViewUserResponse
 {

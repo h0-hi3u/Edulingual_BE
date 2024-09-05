@@ -1,19 +1,17 @@
 ﻿using AutoMapper;
-using System.Net;
+using Edulingual.Caching.Interfaces;
+using Edulingual.Common.Interfaces;
 using Edulingual.DAL.Interfaces;
 using Edulingual.Domain.Entities;
 using Edulingual.Domain.Enum;
 using Edulingual.Service.Exceptions;
+using Edulingual.Service.Extensions;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Models;
 using Edulingual.Service.Request.User;
-using Microsoft.OpenApi.Extensions;
-using Edulingual.Common.Interfaces;
-using System.Linq.Expressions;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Edulingual.Service.Response.User;
-using Edulingual.Service.Extensions;
-using Edulingual.Caching.Interfaces;
+using Microsoft.OpenApi.Extensions;
+using System.Net;
 
 namespace Edulingual.Service.Implementations;
 
@@ -66,7 +64,7 @@ public class UserService : IUserService
     }
 
     public async Task<ServiceActionResult> GetSelfProfile()
-    {   
+    {
         if (_currentUser.CurrentUserId() == null) throw new InvalidParameterException();
 
         var data = _dataCached.GetDataCache<User>(id: _currentUser.CurrentUserId().ToString()!);

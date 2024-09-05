@@ -1,5 +1,4 @@
-﻿using Edulingual.Domain.Enum;
-using Edulingual.Service.Attributes;
+﻿using Edulingual.Service.Attributes;
 using Edulingual.Service.Constants;
 using System.ComponentModel.DataAnnotations;
 

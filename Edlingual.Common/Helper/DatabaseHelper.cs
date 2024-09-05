@@ -9,7 +9,7 @@ namespace Edulingual.Common.Helper;
 
 public static class DatabaseHelper
 {
-    private static IConfiguration _config; 
+    private static IConfiguration _config;
 
     public static void InitConfiguration(IConfiguration config)
     {
@@ -30,7 +30,8 @@ public static class DatabaseHelper
                         .WithScriptsEmbeddedInAssembly(Assembly.Load(assemblyName))
                         .LogToConsole()
                         .Build();
-        } else if (database == DatabaseConstants.SQL_SERVER_NAME)
+        }
+        else if (database == DatabaseConstants.SQL_SERVER_NAME)
         {
             EnsureDatabase.For.SqlDatabase(connection);
             upgrader = DeployChanges.To.SqlDatabase(connection)
@@ -40,16 +41,17 @@ public static class DatabaseHelper
         }
 
         var result = upgrader!.GetScriptsToExecute();
-        if(result.Any())
+        if (result.Any())
         {
             var success = upgrader.PerformUpgrade();
-            if(!success.Successful)
+            if (!success.Successful)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(success.Error);
                 Console.ResetColor();
             }
-        } else
+        }
+        else
         {
             Console.WriteLine("No scripts found!");
         }

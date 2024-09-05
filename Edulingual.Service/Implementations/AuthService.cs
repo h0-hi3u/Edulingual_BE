@@ -1,12 +1,12 @@
 ﻿using Edulingual.DAL.Interfaces;
+using Edulingual.Domain.Enum;
+using Edulingual.Service.Exceptions;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Models;
 using Edulingual.Service.Request.Authentication;
-using Microsoft.Extensions.Configuration;
-using Edulingual.Service.Exceptions;
 using Edulingual.Service.Response.Authentication;
 using Microsoft.EntityFrameworkCore;
-using Edulingual.Domain.Enum;
+using Microsoft.Extensions.Configuration;
 
 namespace Edulingual.Service.Implementations;
 

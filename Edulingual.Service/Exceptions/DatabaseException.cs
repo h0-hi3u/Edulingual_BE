@@ -13,7 +13,7 @@ public class DatabaseException : Exception, IDatabaseException
         _customMessage = customMessage;
     }
 
-    public DatabaseException() 
+    public DatabaseException()
     {
         _customMessage = "Internal Server Error!";
     }

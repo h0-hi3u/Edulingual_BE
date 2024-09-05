@@ -1,5 +1,4 @@
-﻿using System;
-namespace Edulingual.Service.Constants;
+﻿namespace Edulingual.Service.Constants;
 
 public static class MessageContants
 {
