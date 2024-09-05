@@ -8,16 +8,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace Edulingual.Api.Controllers;
 
 [Authorize(Roles = RoleConstants.ADMIN, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
-public class RoleController : BaseApiController
+public class RolesController : BaseApiController
 {
     private readonly IRoleService _roleService;
 
-    public RoleController(IRoleService roleService)
+    public RolesController(IRoleService roleService)
     {
         _roleService = roleService;
     }
 
-    [HttpGet("all-paging")]
+    [HttpGet]
     public async Task<IActionResult> GetAllRolePaging([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10)
     {
         return await ExecuteServiceFunc(
@@ -25,7 +25,7 @@ public class RoleController : BaseApiController
         ).ConfigureAwait(false);
     }
 
-    [HttpGet("get-by-id/{id}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetRoleById([FromRoute] string id)
     {
         return await ExecuteServiceFunc(
@@ -41,7 +41,7 @@ public class RoleController : BaseApiController
         ).ConfigureAwait(false);
     }
 
-    [HttpPut("/{id}")]
+    [HttpPut("{id}")]
     public async Task<IActionResult> UpdateRole([FromBody] UpdateRoleRequest updateRoleRequest, [FromRoute] string id)
     {
         return await ExecuteServiceFunc(

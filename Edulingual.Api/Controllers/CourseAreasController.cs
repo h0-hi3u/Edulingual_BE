@@ -7,28 +7,31 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Edulingual.Api.Controllers;
 
-public class CourseAreaController : BaseApiController
+public class CourseAreasController : BaseApiController
 {
     private readonly ICourseAreaService _courseAreaService;
 
-    public CourseAreaController(ICourseAreaService courseAreaService)
+    public CourseAreasController(ICourseAreaService courseAreaService)
     {
         _courseAreaService = courseAreaService;
     }
-    [HttpGet("get-all")]
-    public async Task<IActionResult> GetAll()
-    {
-        return await ExecuteServiceFunc(
-            async() => await _courseAreaService.GetAll().ConfigureAwait(false)
-            ).ConfigureAwait(false);
-    }
-    [HttpGet("get-all-paging")]
+
+    //[HttpGet]
+    //public async Task<IActionResult> GetAll()
+    //{
+    //    return await ExecuteServiceFunc(
+    //        async() => await _courseAreaService.GetAll().ConfigureAwait(false)
+    //        ).ConfigureAwait(false);
+    //}
+
+    [HttpGet]
     public async Task<IActionResult> GetAllPaging([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10)
     {
         return await ExecuteServiceFunc(
             async() => await _courseAreaService.GetAllPaging(pageIndex, pageSize).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById([FromRoute] string id) 
     {
@@ -36,6 +39,7 @@ public class CourseAreaController : BaseApiController
             async() => await _courseAreaService.GetById(id).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
+
     [Authorize(Roles = RoleConstants.ADMIN, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpPost]
     public async Task<IActionResult> CreateCourseArea(CreateCourseAreaRequest createCourseAreaRequest)
@@ -44,6 +48,7 @@ public class CourseAreaController : BaseApiController
             async() => await _courseAreaService.CreateCourseArea(createCourseAreaRequest).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
+
     [Authorize(Roles = RoleConstants.ADMIN, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpPut]
     public async Task<IActionResult> UpdateCourseArea(UpdateCourseAreaRequest updateCourseAreaRequest)
@@ -52,6 +57,7 @@ public class CourseAreaController : BaseApiController
             async() => await _courseAreaService.UpdateCourseArea(updateCourseAreaRequest).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
+
     [Authorize(Roles = RoleConstants.ADMIN, AuthenticationSchemes = TokenConstants.SCHEMA_BEARER)]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCourseArea([FromRoute] string id)

@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Edulingual.Api.Controllers;
 
-public class VNPayController : BaseApiController
+public class VNPaysController : BaseApiController
 {
     private readonly IVNPayService _vNPayService;
 
-    public VNPayController(IVNPayService vNPayService)
+    public VNPaysController(IVNPayService vNPayService)
     {
         _vNPayService = vNPayService;
     }

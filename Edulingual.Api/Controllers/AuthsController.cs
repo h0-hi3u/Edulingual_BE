@@ -5,11 +5,11 @@ using Edulingual.Service.Request.Authentication;
 
 namespace Edulingual.Api.Controllers;
 
-public class AuthController : BaseApiController
+public class AuthsController : BaseApiController
 {
     private readonly IAuthService _authService;
 
-    public AuthController(IAuthService authService)
+    public AuthsController(IAuthService authService)
     {
         _authService = authService;
     }
@@ -18,7 +18,7 @@ public class AuthController : BaseApiController
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
     {
         return await ExecuteServiceFunc(
-            async() => await _authService.Login(loginRequest).ConfigureAwait(false)
+            async () => await _authService.Login(loginRequest).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 }
