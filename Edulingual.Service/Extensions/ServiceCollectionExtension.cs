@@ -2,7 +2,7 @@
 using Edulingual.Common.Interfaces;
 using Edulingual.DAL.Data;
 using Edulingual.DAL.Interfaces;
-using Edulingual.Infrastructure;
+using Edulingual.Service;
 using Edulingual.Service.AutoMapper;
 using Edulingual.Service.Library;
 using Microsoft.Extensions.DependencyInjection;

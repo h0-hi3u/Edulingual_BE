@@ -1,15 +1,11 @@
 ﻿using Edulingual.Common.Interfaces;
-using Edulingual.Common.Settings;
 using Edulingual.DAL.Interfaces;
 using Edulingual.Service.Exceptions;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Library;
 using Edulingual.Service.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Query.ExpressionTranslators.Internal;
-using System.Configuration;
 
 namespace Edulingual.Service.Implementations;
 

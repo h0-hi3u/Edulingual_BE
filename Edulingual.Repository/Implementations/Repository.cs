@@ -1,10 +1,10 @@
-﻿using Edulingual.DAL.Extensions;
+﻿using Edulingual.Common.Interfaces;
+using Edulingual.Common.Models;
+using Edulingual.DAL.Extensions;
 using Edulingual.DAL.Interfaces;
-using Edulingual.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
-using Edulingual.Common.Models;
 
 namespace Edulingual.DAL.Implementations;
 
@@ -55,12 +55,12 @@ public abstract class Repository<T> : IRepository<T> where T : class
         if (predicate != null) query = query.Where(predicate);
         if (orderBy != null) query = orderBy(query);
         return await query.ToListAsync();
-    }   
+    }
 
     public async Task<T?> GetOneAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, bool isForUpdate = false)
     {
         IQueryable<T> query = _dbSet;
-        if(!isForUpdate) query = query.AsNoTracking();
+        if (!isForUpdate) query = query.AsNoTracking();
         if (include != null) query = include(query);
         if (predicate != null) return await query.SingleOrDefaultAsync(predicate);
         return await query.SingleOrDefaultAsync();

@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using Edulingual.Common.Interfaces;
 using Edulingual.DAL.Interfaces;
+using Edulingual.Domain.Entities;
+using Edulingual.Service.Exceptions;
+using Edulingual.Service.Extensions;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Models;
 using Edulingual.Service.Request.Feedback;
-using Edulingual.Service.Exceptions;
-using Edulingual.Domain.Entities;
-using System.Net;
-using Edulingual.Service.Extensions;
 using Edulingual.Service.Response.Feedback;
+using System.Net;
 
 namespace Edulingual.Service.Implementations;
 
@@ -32,7 +32,7 @@ public class FeedbackService : IFeedbachSerivce
     public async Task<ServiceActionResult> CreateFeedback(CreateFeedbackRequest createFeedbackRequest)
     {
         var course = await _courseRepo.GetOneAsync(predicate: c => c.Id == createFeedbackRequest.CourseId) ?? throw new NotFoundException("Not found course!");
-        
+
         var existing = await _feedbackRepo.GetOneAsync(predicate: f => f.CourseId == createFeedbackRequest.CourseId && f.UserId == _currentUser.CurrentUserId()) ?? throw new InvalidParameterException("You have done feedback for this course!");
 
         var feedback = _mapper.Map<Feedback>(createFeedbackRequest);

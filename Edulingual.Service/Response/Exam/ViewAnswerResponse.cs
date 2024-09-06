@@ -1,6 +1,4 @@
-﻿using Edulingual.Domain.Entities;
-
-namespace Edulingual.Service.Response.Exam;
+﻿namespace Edulingual.Service.Response.Exam;
 
 public class ViewAnswerResponse
 {

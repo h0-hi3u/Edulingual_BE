@@ -1,6 +1,5 @@
 ﻿using Edulingual.Common.Models;
 using Edulingual.Domain.Enum;
-using System.Data.Entity.Core.Metadata.Edm;
 
 namespace Edulingual.Domain.Entities
 {

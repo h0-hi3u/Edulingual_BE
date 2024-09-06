@@ -7,8 +7,8 @@ public class MissingJwtSettingsException : ArgumentNullException
     public override string Message => _customMessage ?? Message;
 
     public MissingJwtSettingsException(string customMessage)
-    { 
-        _customMessage = customMessage; 
+    {
+        _customMessage = customMessage;
     }
 
     public MissingJwtSettingsException()

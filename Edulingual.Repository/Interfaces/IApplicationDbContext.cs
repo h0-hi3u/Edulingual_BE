@@ -8,5 +8,5 @@ public interface IApplicationDbContext : IDisposable
     //void SetModified<T>(T entity) where T : class;
     //void SetDeleted<T>(T enity) where T : class;
     //void Refeshed<T>(T entity) where T : class;
-   Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

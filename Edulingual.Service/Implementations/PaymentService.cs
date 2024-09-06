@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
+using Edulingual.Common.Interfaces;
 using Edulingual.DAL.Interfaces;
 using Edulingual.Domain.Entities;
+using Edulingual.Service.Exceptions;
+using Edulingual.Service.Extensions;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Models;
-using Edulingual.Service.Exceptions;
-using Edulingual.Common.Interfaces;
-using Edulingual.Service.Extensions;
 using Edulingual.Service.Response.Payment;
 
 namespace Edulingual.Service.Implementations;
@@ -73,7 +73,7 @@ public class PaymentService : IPaymentService
 
     public async Task<ServiceActionResult> GetPayment(string id)
     {
-        if(!Guid.TryParse(id, out Guid paymentId)) throw new InvalidParameterException();
+        if (!Guid.TryParse(id, out Guid paymentId)) throw new InvalidParameterException();
 
         var payment = await _paymentRepo.GetOneAsync(predicate: p => p.Id == paymentId) ?? throw new NotFoundException();
 

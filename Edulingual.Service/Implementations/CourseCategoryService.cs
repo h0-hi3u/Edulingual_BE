@@ -7,7 +7,6 @@ using Edulingual.Service.Extensions;
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Models;
 using Edulingual.Service.Request.CourseCategory;
-using Edulingual.Service.Response.CourseArea;
 using Edulingual.Service.Response.CourseCategory;
 using System.Net;
 

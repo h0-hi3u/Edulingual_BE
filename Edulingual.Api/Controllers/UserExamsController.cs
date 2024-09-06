@@ -2,7 +2,6 @@
 using Edulingual.Service.Interfaces;
 using Edulingual.Service.Request.Exam;
 using Microsoft.AspNetCore.Mvc;
-using OfficeOpenXml.Utils;
 
 namespace Edulingual.Api.Controllers;
 
@@ -27,7 +26,7 @@ public class UserExamsController : BaseApiController
     public async Task<IActionResult> GetAllExamInCourse([FromRoute] string id)
     {
         return await ExecuteServiceFunc(
-            async() => await _userExamService.GetAllExamInCourse(id).ConfigureAwait(false)
+            async () => await _userExamService.GetAllExamInCourse(id).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 
@@ -35,7 +34,7 @@ public class UserExamsController : BaseApiController
     public async Task<IActionResult> CreateUserExam([FromBody] CreateExamResultRequest createExamResultRequest)
     {
         return await ExecuteServiceFunc(
-            async() => await _userExamService.CreateUserExam(createExamResultRequest).ConfigureAwait(false)
+            async () => await _userExamService.CreateUserExam(createExamResultRequest).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 }

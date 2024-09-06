@@ -6,6 +6,6 @@ public class UpdateCourseLanguageRequest
 {
     [Required]
     public Guid Id { get; set; }
-    [Required] 
+    [Required]
     public string Name { get; set; } = null!;
 }

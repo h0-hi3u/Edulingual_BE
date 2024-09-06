@@ -2,7 +2,6 @@
 using Edulingual.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Edulingual.Api.Controllers;
 
@@ -17,10 +16,10 @@ public class VNPaysController : BaseApiController
 
     [Authorize]
     [HttpGet]
-    public async Task<IActionResult> CreateUrlPayment(string courseId) 
+    public async Task<IActionResult> CreateUrlPayment(string courseId)
     {
         return await ExecuteServiceFunc(
-            async() => await _vNPayService.CreatePaymentUrl(courseId).ConfigureAwait(false)
+            async () => await _vNPayService.CreatePaymentUrl(courseId).ConfigureAwait(false)
             ).ConfigureAwait(false);
-    } 
+    }
 }

@@ -1,5 +1,4 @@
 ﻿using Edulingual.Common.Interfaces;
-using Edulingual.Domain.Enum;
 using Edulingual.Service.Models;
 using Edulingual.Service.Request.Course;
 using Edulingual.Service.Request.Search;

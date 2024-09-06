@@ -1,10 +1,8 @@
-﻿using System.ComponentModel;
-
-namespace Edulingual.Common.Helper;
+﻿namespace Edulingual.Common.Helper;
 
 
 public static class EnumHelper
-{ 
+{
     public static IEnumerable<T> GetValues<T>()
     {
         return Enum.GetValues(typeof(T)).Cast<T>();

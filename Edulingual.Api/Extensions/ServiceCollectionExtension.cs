@@ -1,13 +1,11 @@
-﻿using AutoMapper;
-using Edulingual.Api.Exceptions;
+﻿using Edulingual.Api.Exceptions;
 using Edulingual.Common.Constants;
 using Edulingual.Common.Exceptions;
-using Edulingual.Common.Interfaces;
 using Edulingual.Common.Settings;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
 
 namespace Edulingual.Api.Extensions;

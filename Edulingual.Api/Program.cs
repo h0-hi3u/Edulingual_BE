@@ -1,10 +1,10 @@
 using Edulingual.Api.Extensions;
 using Edulingual.Caching.Extensions;
 using Edulingual.Common.Constants;
-using Edulingual.Service.Extensions;
 using Edulingual.Common.Helper;
-using Serilog;
+using Edulingual.Service.Extensions;
 using OfficeOpenXml;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,8 +29,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 //}
 app.UseCors(CorsConstants.APP_CORS_POLICY);
 app.UseSerilogRequestLogging();

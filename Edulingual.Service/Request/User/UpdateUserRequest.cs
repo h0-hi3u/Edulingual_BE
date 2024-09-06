@@ -1,6 +1,4 @@
-﻿using Edulingual.Service.Attributes;
-using Edulingual.Service.Constants;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Edulingual.Service.Request.User;
 

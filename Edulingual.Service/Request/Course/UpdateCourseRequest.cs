@@ -1,6 +1,4 @@
-﻿using Edulingual.Domain.Enum;
-
-namespace Edulingual.Service.Request.Course;
+﻿namespace Edulingual.Service.Request.Course;
 
 public class UpdateCourseRequest
 {

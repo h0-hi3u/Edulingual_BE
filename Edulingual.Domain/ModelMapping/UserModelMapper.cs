@@ -1,8 +1,6 @@
 ﻿using Edulingual.Domain.Entities;
 using Edulingual.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using static System.Net.Mime.MediaTypeNames;
-using System;
 
 namespace Edulingual.Domain.ModelMapping;
 public class UserModelMapper : IModelMapper

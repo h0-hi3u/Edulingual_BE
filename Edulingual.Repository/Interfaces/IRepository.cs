@@ -7,7 +7,7 @@ namespace Edulingual.DAL.Interfaces;
 
 public interface IRepository<T> where T : class
 {
-   DbSet<T> GetAll();
+    DbSet<T> GetAll();
 
     #region Add 
     //void Add(T entity);
@@ -18,7 +18,7 @@ public interface IRepository<T> where T : class
     #region Update
     void Update(T entity);
     void UpdateRange(IEnumerable<T> entities);
-   // Task UpdateAsync(T entity);
+    // Task UpdateAsync(T entity);
     //Task UpdateRangeAsync(IEnumerable<T> entities);
     #endregion
 

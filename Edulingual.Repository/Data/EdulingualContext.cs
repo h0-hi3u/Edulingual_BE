@@ -2,10 +2,8 @@
 using Edulingual.Common.Interfaces;
 using Edulingual.Common.Models;
 using Edulingual.DAL.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Edulingual.Domain.Interfaces;
-using Edulingual.Domain.Entities;
-using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace Edulingual.DAL.Data;
 

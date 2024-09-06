@@ -20,7 +20,7 @@ public class ExamsController : BaseApiController
     public async Task<IActionResult> GetExam([FromRoute] string id)
     {
         return await ExecuteServiceFunc(
-            async() => await _examService.GetExam(id).ConfigureAwait(false)
+            async () => await _examService.GetExam(id).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 
@@ -29,7 +29,7 @@ public class ExamsController : BaseApiController
     public async Task<IActionResult> DeleteExam([FromRoute] string id)
     {
         return await ExecuteServiceFunc(
-            async() => await _examService.DeleteExam(id).ConfigureAwait(false)
+            async () => await _examService.DeleteExam(id).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 
@@ -38,7 +38,7 @@ public class ExamsController : BaseApiController
     public async Task<IActionResult> CreateExamFromExcel([FromRoute] string courseId, IFormFile file)
     {
         return await ExecuteServiceFunc(
-            async() => await _examService.CreateExamFromExcel(courseId, file).ConfigureAwait(false)
+            async () => await _examService.CreateExamFromExcel(courseId, file).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 }

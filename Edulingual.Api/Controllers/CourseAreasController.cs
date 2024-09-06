@@ -28,15 +28,15 @@ public class CourseAreasController : BaseApiController
     public async Task<IActionResult> GetAllPaging([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10)
     {
         return await ExecuteServiceFunc(
-            async() => await _courseAreaService.GetAllPaging(pageIndex, pageSize).ConfigureAwait(false)
+            async () => await _courseAreaService.GetAllPaging(pageIndex, pageSize).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById([FromRoute] string id) 
+    public async Task<IActionResult> GetById([FromRoute] string id)
     {
         return await ExecuteServiceFunc(
-            async() => await _courseAreaService.GetById(id).ConfigureAwait(false)
+            async () => await _courseAreaService.GetById(id).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 
@@ -45,7 +45,7 @@ public class CourseAreasController : BaseApiController
     public async Task<IActionResult> CreateCourseArea(CreateCourseAreaRequest createCourseAreaRequest)
     {
         return await ExecuteServiceFunc(
-            async() => await _courseAreaService.CreateCourseArea(createCourseAreaRequest).ConfigureAwait(false)
+            async () => await _courseAreaService.CreateCourseArea(createCourseAreaRequest).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 
@@ -54,7 +54,7 @@ public class CourseAreasController : BaseApiController
     public async Task<IActionResult> UpdateCourseArea(UpdateCourseAreaRequest updateCourseAreaRequest)
     {
         return await ExecuteServiceFunc(
-            async() => await _courseAreaService.UpdateCourseArea(updateCourseAreaRequest).ConfigureAwait(false)
+            async () => await _courseAreaService.UpdateCourseArea(updateCourseAreaRequest).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 
@@ -63,7 +63,7 @@ public class CourseAreasController : BaseApiController
     public async Task<IActionResult> DeleteCourseArea([FromRoute] string id)
     {
         return await ExecuteServiceFunc(
-            async() => await _courseAreaService.DeleteCourseArea(id).ConfigureAwait(false)
+            async () => await _courseAreaService.DeleteCourseArea(id).ConfigureAwait(false)
             ).ConfigureAwait(false);
     }
 }

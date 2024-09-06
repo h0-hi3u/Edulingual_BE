@@ -1,7 +1,6 @@
 ﻿using Edulingual.Common.Exceptions;
 using Edulingual.Service.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Edulingual.Api.Controllers.Base;
 
@@ -38,7 +37,7 @@ public abstract class BaseApiController : ControllerBase
     {
         try
         {
-             var result = await serviceFunc();
+            var result = await serviceFunc();
             return BuildSuccessResult(result);
         }
         catch (Exception ex)
