@@ -19,12 +19,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Edulingual.Domain\Edulingual.Domain.csproj" />
     <ProjectReference Include="..\Edulingual.Repository\Edulingual.DAL.csproj" />
     <ProjectReference Include="..\Edulingual.Service\Edulingual.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="NUnit.Framework" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.Test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
