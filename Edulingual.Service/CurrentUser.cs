@@ -1,4 +1,4 @@
-﻿namespace Edulingual.Infrastructure;
+﻿namespace Edulingual.Service;
 
 using Edulingual.Common.Interfaces;
 using Microsoft.AspNetCore.Http;

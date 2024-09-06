@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edulingual.DAL", "Edulingua
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edulingual.Api", "Edulingual.Api\Edulingual.Api.csproj", "{EC54ACCD-96F2-4599-B82E-77475AB86DF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edulingual.Caching", "Edulingual.Cache\Edulingual.Caching.csproj", "{FD9EE533-CF40-4774-AC10-0A3BBEACA765}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edulingual.Caching", "Edulingual.Cache\Edulingual.Caching.csproj", "{FD9EE533-CF40-4774-AC10-0A3BBEACA765}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edulingual.UnitTests", "Edulingual.UnitTests\Edulingual.UnitTests.csproj", "{9D3EC3E1-B6C0-49A7-8566-EB0E0D6C1247}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edulingual.IntegrationTests", "Edulingual.IntegrationTests\Edulingual.IntegrationTests.csproj", "{8942AF58-7E3D-4A46-8FE7-DDCE75094CB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{FD9EE533-CF40-4774-AC10-0A3BBEACA765}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD9EE533-CF40-4774-AC10-0A3BBEACA765}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD9EE533-CF40-4774-AC10-0A3BBEACA765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D3EC3E1-B6C0-49A7-8566-EB0E0D6C1247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D3EC3E1-B6C0-49A7-8566-EB0E0D6C1247}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D3EC3E1-B6C0-49A7-8566-EB0E0D6C1247}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D3EC3E1-B6C0-49A7-8566-EB0E0D6C1247}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8942AF58-7E3D-4A46-8FE7-DDCE75094CB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8942AF58-7E3D-4A46-8FE7-DDCE75094CB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8942AF58-7E3D-4A46-8FE7-DDCE75094CB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8942AF58-7E3D-4A46-8FE7-DDCE75094CB6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

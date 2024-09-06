@@ -51,9 +51,13 @@ public class UserService : IUserService
 
     public async Task<ServiceActionResult> CreateUser(CreateUserRequest createUserRequest)
     {
+        var existing = await _userRepo.GetOneAsync(u => u.Email == createUserRequest.Email); 
+        if (existing != null) throw new InvalidParameterException("Email is existing in system!");
+
         var user = _mapper.Map<User>(createUserRequest);
         var role = await _roleRepo.GetOneAsync(predicate: r => r.Name == Enum.GetName(RoleEnum.Student) && !r.IsDeleted);
         if (role == null) throw new InvalidParameterException("Invalid role!");
+
         user.RoleId = role.Id;
         user.Status = UserStatusEnum.Active;
         user.Password = BCrypt.Net.BCrypt.HashPassword(createUserRequest.Password);
