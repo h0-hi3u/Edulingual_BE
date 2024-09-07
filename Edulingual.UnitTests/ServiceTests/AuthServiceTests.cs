@@ -4,14 +4,10 @@ using Edulingual.Service.Interfaces;
 using Edulingual.Service.Request.Authentication;
 using Microsoft.Extensions.Configuration;
 using Moq;
-using Edulingual.Domain.Entities;
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Query;
-using Edulingual.Common.Models;
 using Edulingual.Service.Exceptions;
 using Edulingual.UnitTests.Mock;
 
-namespace Edulingual.UnitTests;
+namespace Edulingual.UnitTests.ServiceTests;
 
 [TestFixture]
 public class AuthServiceTests
@@ -23,12 +19,9 @@ public class AuthServiceTests
     [SetUp]
     public void Setup()
     {
-        _mockConfig = new ConfigurationBuilder()
-           .AddJsonFile("appsettings.Test.json")
-           .AddEnvironmentVariables()
-           .Build();
+        _mockConfig = MockCommonObject.SetUpMockConfiguration();
 
-        _mockUserRepo = MockUserRepository.SetUpMockUserRepository();
+        _mockUserRepo = MockRepository.SetUpMockUserRepository();
 
         _authService = new AuthService(_mockConfig, _mockUserRepo.Object);
     }
