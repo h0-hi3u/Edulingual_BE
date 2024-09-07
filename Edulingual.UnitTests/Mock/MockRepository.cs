@@ -9,6 +9,12 @@ namespace Edulingual.UnitTests;
 
 public static class MockRepository
 {
+    public static Mock<IUnitOfWork> SetUpMockUnitOfWork()
+    {
+        var _mockUnitOfWork = new Mock<IUnitOfWork>();
+
+        return _mockUnitOfWork;
+    }
     public static Mock<IUserRepository> SetUpMockUserRepository()
     {
         IEnumerable<User> listUsers = new List<User>

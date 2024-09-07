@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Edulingual.Caching.Interfaces;
 using Edulingual.DAL.Interfaces;
+using Edulingual.Domain.Entities;
+using Edulingual.UnitTests.Mock;
 using Moq;
 
 namespace Edulingual.UnitTests.ServiceTests;
@@ -17,5 +19,8 @@ public class CourseAreaServiceTests
     public void SetUp()
     {
         _mockCourseAreaRepo = MockRepository.SetUpMockCourseAreaRepository();
+        _mockDataCached = MockCommonObject.SetUpDataCached();
+        _mockMapper = MockCommonObject.SetUpMockMapper();
+        _mockUnitOfWork = MockRepository.SetUpMockUnitOfWork();
     }
 }
