@@ -1,14 +1,13 @@
 ﻿using Edulingual.Common.Models;
-using Edulingual.DAL.Implementations;
 using Edulingual.DAL.Interfaces;
 using Edulingual.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using System.Linq.Expressions;
 
-namespace Edulingual.UnitTests.Mock;
+namespace Edulingual.UnitTests;
 
-public static class MockUserRepository
+public static class MockRepository
 {
     public static Mock<IUserRepository> SetUpMockUserRepository()
     {
@@ -81,7 +80,6 @@ public static class MockUserRepository
         };
 
         Mock<IUserRepository> _mockUserRepo = new Mock<IUserRepository>();
-
         //_mockUserRepo.Setup(ur => ur.GetAll())
         //    .Returns((Microsoft.EntityFrameworkCore.DbSet<User>)listUsers);
         _mockUserRepo.Setup(ur => ur.AddAsync(new User()));
@@ -144,5 +142,77 @@ public static class MockUserRepository
             .ReturnsAsync(paginate);
 
         return _mockUserRepo;
+    }
+
+    public static Mock<ICourseAreaRepository> SetUpMockCourseAreaRepository()
+    {
+        IEnumerable<CourseArea> listCourseAreas = new List<CourseArea>
+        {
+            new CourseArea
+            {
+                Name = "Ho Chi Minh"
+            },
+            new CourseArea
+            {
+                Name = "Da Nang"
+            },
+            new CourseArea
+            {
+                Name = "Ha Noi"
+            },
+            new CourseArea
+            {
+                Name = "Can Tho"
+            },
+            new CourseArea
+            {
+                Name = "Da Lat"
+            },
+        };
+
+        IPaginate<CourseArea> paginate = new Paginate<CourseArea>
+        {
+            PageSize = 5,
+            PageIndex = 1,
+            TotalRecord = 5,
+            TotalPage = 1,
+            Data = listCourseAreas
+        };
+
+        Mock<ICourseAreaRepository> _mockCourseAreaRepo = new Mock<ICourseAreaRepository>();
+
+        _mockCourseAreaRepo.Setup(ur => ur.AddAsync(new CourseArea()));
+        _mockCourseAreaRepo.Setup(ur => ur.AddRangeAsync(listCourseAreas));
+        _mockCourseAreaRepo.Setup(ur => ur.Update(It.IsAny<CourseArea>()));
+        _mockCourseAreaRepo.Setup(ur => ur.Delete(new CourseArea()));
+
+        _mockCourseAreaRepo.Setup(ur => ur.GetOneAsync(
+        It.Is<Expression<Func<CourseArea, bool>>>(p => p.Compile().Invoke(new CourseArea
+        {
+            Name = "Long An"
+        })),
+        It.IsAny<Func<IQueryable<CourseArea>, IIncludableQueryable<CourseArea, object>>>(),
+        It.IsAny<bool>()))
+            .ReturnsAsync(new CourseArea
+            {
+                Name = "Long An"
+            });
+
+        _mockCourseAreaRepo.Setup(ur => ur.GetListAsync(
+        It.IsAny<Expression<Func<CourseArea, bool>>>(),
+        It.IsAny<Func<IQueryable<CourseArea>, IOrderedQueryable<CourseArea>>>(),
+        It.IsAny<Func<IQueryable<CourseArea>, IIncludableQueryable<CourseArea, object>>>(),
+        It.IsAny<bool>()))
+            .ReturnsAsync(listCourseAreas);
+
+        _mockCourseAreaRepo.Setup(ur => ur.GetPagingAsync(
+        It.IsAny<Expression<Func<CourseArea, bool>>>(),
+        It.IsAny<Func<IQueryable<CourseArea>, IOrderedQueryable<CourseArea>>>(),
+        It.IsAny<Func<IQueryable<CourseArea>, IIncludableQueryable<CourseArea, object>>>(),
+        It.IsAny<int>(),
+        It.IsAny<int>()))
+            .ReturnsAsync(paginate);
+
+        return _mockCourseAreaRepo;
     }
 }

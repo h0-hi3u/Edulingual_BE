@@ -12,5 +12,4 @@ public interface IDataCached : IAutoRegisterable
     Task SetToCache<T>(IPaginate<T> value, int pageSize, int pageIndex, int? cacheTime = CachingConstatns.CacheTime);
     Task RemoveDataCache<T>(string id);
     Task RemoveDataCache<T>(int pageIndex, int pageSize);
-
 }
