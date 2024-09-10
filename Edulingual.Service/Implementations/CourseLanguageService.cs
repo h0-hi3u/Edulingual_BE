@@ -59,6 +59,11 @@ public class CourseLanguageService : ICourseLanguageService
 
     public async Task<ServiceActionResult> GetAllPaging(int pageIndex, int pageSize)
     {
+        if (pageIndex < 1 || pageSize < 1) throw new InvalidParameterException();
+        var totalRecord = await _courseLanguageRepo.CountAsync();
+        int totalPage = totalRecord != 0 ? (int)Math.Ceiling(totalRecord / (double)pageSize) : 0;
+
+        if (totalPage < pageIndex) throw new InvalidParameterException($"Page index need smaller than {totalPage}");
         var data = _dataCached.GetDataCache<CourseCategory>(pageIndex: pageIndex, pageSize: pageSize);
         if (data != null) return new ServiceActionResult(data);
 

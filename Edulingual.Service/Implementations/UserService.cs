@@ -99,6 +99,12 @@ public class UserService : IUserService
     {
         var role = await _roleRepo.GetOneAsync(predicate: r => r.Name == Enum.GetName(roleValue) && !r.IsDeleted) ?? throw new InvalidParameterException("Invalid role!");
 
+        if (pageIndex < 1 || pageSize < 1) throw new InvalidParameterException();
+        var totalRecord = await _userRepo.CountAsync(u => u.RoleId == role.Id && !u.IsDeleted && u.Status != UserStatusEnum.Banned);
+        int totalPage = totalRecord != 0 ? (int)Math.Ceiling(totalRecord / (double)pageSize) : 0;
+
+        if (totalPage < pageIndex) throw new InvalidParameterException($"Page index need smaller than {totalPage}");
+
         var list = await _userRepo.GetPagingAsync(
             predicate: u => u.RoleId == role.Id && !u.IsDeleted && u.Status != UserStatusEnum.Banned,
             pageIndex: pageIndex,

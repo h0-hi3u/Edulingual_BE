@@ -89,6 +89,11 @@ public class CourseService : ICourseService
 
     public async Task<ServiceActionResult> GetCoursePaging(int pageIndex, int pageSize)
     {
+        if (pageIndex < 1 || pageSize < 1) throw new InvalidParameterException();
+        var totalRecord = await _courseRepo.CountAsync(predicate: c => !c.IsDeleted);
+        int totalPage = totalRecord != 0 ? (int)Math.Ceiling(totalRecord / (double)pageSize) : 0;
+
+        if (totalPage < pageIndex) throw new InvalidParameterException($"Page index need smaller than {totalPage}");
         var data = await _dataCached.GetDataCache<Course>(pageIndex: pageIndex, pageSize: pageSize);
         if (data != null) return new ServiceActionResult(data);
 
@@ -166,6 +171,11 @@ public class CourseService : ICourseService
     }
     public async Task<ServiceActionResult> GetMyCourses(int pageIndex, int pageSize)
     {
+        if (pageIndex < 1 || pageSize < 1) throw new InvalidParameterException();
+        var totalRecord = await _courseRepo.CountAsync(predicate: c => c.CreatedBy == _currentUser.CurrentUserId() && !c.IsDeleted);
+        int totalPage = totalRecord != 0 ? (int)Math.Ceiling(totalRecord / (double)pageSize) : 0;
+
+        if (totalPage < pageIndex) throw new InvalidParameterException($"Page index need smaller than {totalPage}");
         var list = await _courseRepo.GetPagingAsync(
             predicate: c => c.CreatedBy == _currentUser.CurrentUserId() && !c.IsDeleted,
             pageIndex: pageIndex,

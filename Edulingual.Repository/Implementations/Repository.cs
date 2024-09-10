@@ -91,4 +91,11 @@ public abstract class Repository<T> : IRepository<T> where T : class
     {
         _dbSet.UpdateRange(entities);
     }
+
+    public async Task<int> CountAsync(Expression<Func<T, bool>>? predicate = null)
+    {
+        IQueryable<T> query = _dbSet.AsNoTracking();
+        if(predicate != null) query = query.Where(predicate: predicate);
+        return await query.CountAsync();
+    }
 }
