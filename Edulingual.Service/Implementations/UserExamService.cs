@@ -97,9 +97,15 @@ public class UserExamService : IUserExamService
 
     public async Task<ServiceActionResult> GetMyExamDoneInCourse(string id, int pageIndex, int pageSize)
     {
+
         if (!Guid.TryParse(id, out Guid examId)) throw new InvalidParameterException();
 
         var exam = await _examRepo.GetOneAsync(predicate: e => e.Id == examId) ?? throw new NotFoundException("Not found exam!");
+        if (pageIndex < 1 || pageSize < 1) throw new InvalidParameterException();
+        var totalRecord = await _userExamRepo.CountAsync(ue => ue.ExamId == examId && ue.UserId == _currentUser.CurrentUserId());
+        int totalPage = totalRecord != 0 ? (int)Math.Ceiling(totalRecord / (double)pageSize) : 0;
+
+        if (totalPage < pageIndex) throw new InvalidParameterException($"Page index need smaller than {totalPage}");
 
         var list = await _userExamRepo.GetPagingAsync(
             predicate: ue => ue.ExamId == examId && ue.UserId == _currentUser.CurrentUserId(),

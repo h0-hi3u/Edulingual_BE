@@ -60,6 +60,12 @@ public class PaymentService : IPaymentService
 
     public async Task<ServiceActionResult> GetMyPayments(int pageIndex, int pageSize)
     {
+        if (pageIndex < 1 || pageSize < 1) throw new InvalidParameterException();
+        var totalRecord = await _paymentRepo.CountAsync(p => p.UserId == _currentUser.CurrentUserId());
+        int totalPage = totalRecord != 0 ? (int)Math.Ceiling(totalRecord / (double)pageSize) : 0;
+
+        if (totalPage < pageIndex) throw new InvalidParameterException($"Page index need smaller than {totalPage}");
+
         var list = await _paymentRepo.GetPagingAsync(
             predicate: p => p.UserId == _currentUser.CurrentUserId(),
             pageIndex: pageIndex,

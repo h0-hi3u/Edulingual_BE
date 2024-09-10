@@ -60,6 +60,11 @@ public class CourseAreaService : ICourseAreaService
     public async Task<ServiceActionResult> GetAllPaging(int pageIndex, int pageSize)
     {
         if (pageIndex < 1 || pageSize < 1) throw new InvalidParameterException();
+        var totalRecord = await _courseAreaRepo.CountAsync();
+        int totalPage = totalRecord != 0 ? (int)Math.Ceiling(totalRecord / (double)pageSize) : 0;
+
+        if (totalPage < pageIndex) throw new InvalidParameterException($"Page index need smaller than {totalPage}");
+
         var data = await _dataCached.GetDataCache<CourseArea>(pageIndex: pageIndex, pageSize: pageSize);
         if (data != null)
             return new ServiceActionResult(data);

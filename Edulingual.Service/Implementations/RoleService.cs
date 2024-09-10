@@ -32,6 +32,11 @@ public class RoleService : IRoleService
     {
         if (pageIndex < 1 || pageSize < 1) throw new InvalidParameterException();
 
+        var totalRecord = await _roleRepo.CountAsync(r => !r.IsDeleted);
+        int totalPage = totalRecord != 0 ? (int)Math.Ceiling(totalRecord / (double)pageSize) : 0;
+
+        if (totalPage < pageIndex) throw new InvalidParameterException($"Page index need smaller than {totalPage}");
+
         var dataFromCached = await _dataCached.GetDataCache<Role>(pageIndex: pageIndex, pageSize: pageSize);
         if (dataFromCached != null)
         {

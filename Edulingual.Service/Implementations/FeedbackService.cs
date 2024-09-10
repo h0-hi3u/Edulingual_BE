@@ -67,8 +67,13 @@ public class FeedbackService : IFeedbachSerivce
 
         var course = await _courseRepo.GetOneAsync(predicate: c => c.Id == courseId) ?? throw new NotFoundException("Not found course!");
 
+        if (pageIndex < 1 || pageSize < 1) throw new InvalidParameterException();
+        var totalRecord = await _feedbackRepo.CountAsync(f => f.CourseId == courseId && !f.IsDeleted);
+        int totalPage = totalRecord != 0 ? (int)Math.Ceiling(totalRecord / (double)pageSize) : 0;
+        if (totalPage < pageIndex) throw new InvalidParameterException($"Page index need smaller than {totalPage}");
+
         var list = await _feedbackRepo.GetPagingAsync(
-            predicate: f => f.CourseId == courseId,
+            predicate: f => f.CourseId == courseId && !f.IsDeleted,
             pageIndex: pageIndex,
             pageSize: pageSize
             );
