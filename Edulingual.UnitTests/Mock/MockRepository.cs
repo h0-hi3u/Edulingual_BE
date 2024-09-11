@@ -187,10 +187,10 @@ public static class MockRepository
 
         Mock<ICourseAreaRepository> _mockCourseAreaRepo = new Mock<ICourseAreaRepository>();
 
-        _mockCourseAreaRepo.Setup(ur => ur.AddAsync(new CourseArea()));
-        _mockCourseAreaRepo.Setup(ur => ur.AddRangeAsync(listCourseAreas));
+        _mockCourseAreaRepo.Setup(ur => ur.AddAsync(It.IsAny<CourseArea>()));
+        _mockCourseAreaRepo.Setup(ur => ur.AddRangeAsync(It.IsAny<IEnumerable<CourseArea>>()));
         _mockCourseAreaRepo.Setup(ur => ur.Update(It.IsAny<CourseArea>()));
-        _mockCourseAreaRepo.Setup(ur => ur.Delete(new CourseArea()));
+        _mockCourseAreaRepo.Setup(ur => ur.Delete(It.IsAny<CourseArea>()));
 
         _mockCourseAreaRepo.Setup(ur => ur.GetOneAsync(
         It.Is<Expression<Func<CourseArea, bool>>>(p => p.Compile().Invoke(new CourseArea
@@ -209,7 +209,7 @@ public static class MockRepository
         It.IsAny<Func<IQueryable<CourseArea>, IOrderedQueryable<CourseArea>>>(),
         It.IsAny<Func<IQueryable<CourseArea>, IIncludableQueryable<CourseArea, object>>>(),
         It.IsAny<bool>()))
-            .ReturnsAsync(listCourseAreas);
+            .ReturnsAsync(It.IsAny<IEnumerable<CourseArea>>);
 
         _mockCourseAreaRepo.Setup(ur => ur.GetPagingAsync(
         It.IsAny<Expression<Func<CourseArea, bool>>>(),
@@ -217,7 +217,7 @@ public static class MockRepository
         It.IsAny<Func<IQueryable<CourseArea>, IIncludableQueryable<CourseArea, object>>>(),
         It.IsAny<int>(),
         It.IsAny<int>()))
-            .ReturnsAsync(paginate);
+            .ReturnsAsync(It.IsAny<IPaginate<CourseArea>>());
 
         return _mockCourseAreaRepo;
     }

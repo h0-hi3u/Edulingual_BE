@@ -11,6 +11,8 @@ public static class MockCommonObject
 {
     public static IConfiguration SetUpMockConfiguration()
     {
+        //var _mockConfiguration = new Mock<IConfiguration>();
+        //_mockConfiguration.Setup(x => x.GetSection(It.IsAny<string>())).Returns(It.IsAny<object>());
         return new ConfigurationBuilder()
           .AddJsonFile("appsettings.Test.json")
           .AddEnvironmentVariables()
@@ -20,7 +22,7 @@ public static class MockCommonObject
     public static Mock<IMapper> SetUpMockMapper()
     {
         var _mockMapper = new Mock<IMapper>();
-
+        //_mockMapper.Setup(m => m.Map<>(It.IsAny<object>())).Returns(It.IsAny<object>());
         return _mockMapper;
     }
     public static Mock<IDataCached> SetUpDataCached()
