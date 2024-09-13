@@ -4,10 +4,12 @@ using Edulingual.Common.Models;
 using Edulingual.DAL.Interfaces;
 using Edulingual.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Edulingual.Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Edulingual.DAL.Data;
 
-public class EdulingualContext : DbContext, IApplicationDbContext
+public partial class EdulingualContext : DbContext, IApplicationDbContext
 {
     private readonly ICurrentUser _currentUser;
 
