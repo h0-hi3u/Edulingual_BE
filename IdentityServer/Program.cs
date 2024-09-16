@@ -3,7 +3,7 @@ var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly.GetName().Name;
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddIdentity<>
+// builder.Services.AddIdentity<>
 
 
 
